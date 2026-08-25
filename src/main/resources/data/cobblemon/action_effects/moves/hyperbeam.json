@@ -1,0 +1,101 @@
+{
+  "timeline": [
+    {
+      "type": "add_holds",
+      "holds": ["effects"]
+    },
+    {
+      "type": "animation",
+      "animation": ["hyperbeam", "beam", "special"]
+    },
+    {
+      "type": "sequence",
+      "keyframes": [
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true",
+          "effect": "cobblemon:hyperbeam_charge",
+          "locators": ["special", "target"]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true",
+          "effect": "cobblemon:hyperbeam_chargecore",
+          "locators": ["special", "target"]
+        }
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": 1.0
+    },
+    {
+      "type": "entity_particles",
+      "effect": "cobblemon:hyperbeam_actorpilot",
+      "locators": ["special", "target"],
+      "targetLocators": ["target"]
+    },
+    {
+      "type": "pause",
+      "pause": 0.15
+    },
+    {
+      "type": "sequence",
+      "keyframes": [
+        {
+          "type": "entity_sound",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+          "sound": "cobblemon:move.hyperbeam.target"
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+          "effect": "cobblemon:hyperbeam_targetflash",
+          "locators": ["target"]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+          "effect": "cobblemon:hyperbeam_targetburst",
+          "locators": ["target"]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+          "effect": "cobblemon:hyperbeam_targetring",
+          "locators": ["target"]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+          "effect": "cobblemon:hyperbeam_targetsparks",
+          "locators": ["target"]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+          "effect": "cobblemon:impact_normal",
+          "locators": ["target"]
+        }
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": 0.2
+    },
+    {
+      "type": "entity_particles",
+      "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+      "effect": "cobblemon:hyperbeam_targetsmoke",
+      "locators": ["target"]
+    },
+    {
+      "type": "remove_holds",
+      "holds": ["effects"]
+    },
+    {
+      "type": "pause",
+      "pause": 2.15
+    }
+  ]
+}

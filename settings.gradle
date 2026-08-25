@@ -1,0 +1,14 @@
+pluginManagement {
+    repositories {
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
+        }
+        gradlePluginPortal()
+    }
+}
+
+// Lets Gradle auto-download a JDK 21 toolchain (Cobblemon requires exactly Java 21 at runtime)
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+}

@@ -1,0 +1,74 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "cobblemon:hyperbeam_targetburst",
+      "basic_render_parameters": {
+        "material": "particles_add",
+        "texture": "textures/particles/generic/orb/mediumfadeorb"
+      }
+    },
+    "curves": {
+      "variable.scale": {
+        "type": "linear",
+        "input": "v.particle_age",
+        "horizontal_range": "v.particle_lifetime",
+        "nodes": [1, 1, 0.85, 0.6, 0.3, 0]
+      }
+    },
+    "components": {
+      "minecraft:emitter_rate_instant": {
+        "num_particles": "60*math.clamp(v.entity_size,1,2)"
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 0.5
+      },
+      "minecraft:emitter_shape_point": {
+        "direction": [
+          "(v.particle_random_1-0.5)",
+          "(v.particle_random_2-0.5)",
+          "(v.particle_random_3-0.5)"
+        ]
+      },
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": "math.random(0.45, 0.8)"
+      },
+      "minecraft:particle_initial_speed": "math.random(8,16)*math.clamp(v.entity_size,1,4)",
+      "minecraft:particle_motion_dynamic": {
+        "linear_acceleration": [0, 1.5, 0],
+        "linear_drag_coefficient": 4
+      },
+      "minecraft:particle_appearance_billboard": {
+        "size": [
+          "(0.45+(v.particle_random_4*0.3))*v.scale",
+          "(0.45+(v.particle_random_4*0.3))*v.scale"
+        ],
+        "facing_camera_mode": "rotate_xyz",
+        "uv": {
+          "texture_width": 99,
+          "texture_height": 9,
+          "flipbook": {
+            "base_UV": [0, 0],
+            "size_UV": [9, 9],
+            "step_UV": [9, 0],
+            "frames_per_second": 24,
+            "max_frame": 11,
+            "loop": false
+          }
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": {
+          "interpolant": "v.particle_age/v.particle_lifetime",
+          "gradient": {
+            "0.0": "#FFFFFFFF",
+            "0.25": "#FFFFD27A",
+            "0.55": "#FFFF7A2E",
+            "0.8": "#FFC0284A",
+            "1.0": "#66701830"
+          }
+        }
+      }
+    }
+  }
+}

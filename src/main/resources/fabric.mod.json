@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "cobblemon_extra_move_animation",
+  "version": "${version}",
+  "name": "Cobblemon Extra Move Animations",
+  "description": "Adds custom battle animations, particle effects, and sound design for eight Pokémon moves not yet animated by Cobblemon: U-turn, Moonblast, Hyper Beam, Hydro Pump, Volt Switch, Draco Meteor, Earthquake, and Solar Beam.",
+  "authors": ["Ramoz2011"],
+  "contact": {
+    "homepage": "https://github.com/Ramoz2011/cobblemon-extra-move-animations",
+    "issues": "https://github.com/Ramoz2011/cobblemon-extra-move-animations/issues",
+    "sources": "https://github.com/Ramoz2011/cobblemon-extra-move-animations"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "_1dknone.cobblemon_extra_move_animation.client.Cobblemon_extra_move_animationDataGenerator"
+    ],
+    "client": [
+      "_1dknone.cobblemon_extra_move_animation.client.Cobblemon_extra_move_animationClient"
+    ],
+    "main": [
+      "_1dknone.cobblemon_extra_move_animation.Cobblemon_extra_move_animation"
+    ]
+  },
+  "mixins": [
+    "cobblemon_extra_move_animation.mixins.json",
+    {
+      "config": "cobblemon_extra_move_animation.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}",
+    "cobblemon": ">=1.6.0"
+  }
+}

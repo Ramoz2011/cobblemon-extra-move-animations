@@ -1,0 +1,96 @@
+{
+  "timeline": [
+    {
+      "type": "add_holds",
+      "holds": ["effects"]
+    },
+    {
+      "type": "animation",
+      "animation": ["hydropump", "spray", "beam", "special"]
+    },
+    {
+      "type": "sequence",
+      "keyframes": [
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true",
+          "effect": "cobblemon:hydropump_charge",
+          "locators": ["special", "target"]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true",
+          "effect": "cobblemon:hydropump_chargeorb",
+          "locators": ["special", "target"]
+        }
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": 0.8
+    },
+    {
+      "type": "entity_particles",
+      "effect": "cobblemon:hydropump_actorpilot",
+      "locators": ["special", "target"],
+      "targetLocators": ["target"]
+    },
+    {
+      "type": "pause",
+      "pause": 0.2
+    },
+    {
+      "type": "sequence",
+      "keyframes": [
+        {
+          "type": "entity_sound",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+          "sound": "cobblemon:move.hydropump.target"
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+          "expressions": ["q.sound('impact.water');"]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+          "effect": "cobblemon:hydropump_targetsplash",
+          "locators": ["target"]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+          "effect": "cobblemon:hydropump_targetburst",
+          "locators": ["target"]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+          "effect": "cobblemon:hydropump_targetfoam",
+          "locators": ["target"]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+          "effect": "cobblemon:hydropump_targetring",
+          "locators": ["target"]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+          "effect": "cobblemon:impact_water",
+          "locators": ["target"]
+        }
+      ]
+    },
+    {
+      "type": "remove_holds",
+      "holds": ["effects"]
+    },
+    {
+      "type": "pause",
+      "pause": 2.0
+    }
+  ]
+}

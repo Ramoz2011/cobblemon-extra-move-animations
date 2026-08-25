@@ -1,0 +1,128 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.dracometeor.actor": {
+      "animation_length": 3.0,
+      "bones": {
+        "root_part": {
+          "rotation": {
+            "0.0": {
+              "pre": [0, 0, 0],
+              "post": [0, 0, 0],
+              "lerp_mode": "catmullrom"
+            },
+            "0.375": {
+              "post": [-8, 0, 0],
+              "lerp_mode": "catmullrom"
+            },
+            "0.75": {
+              "post": [-16, 0, 0],
+              "lerp_mode": "catmullrom"
+            },
+            "1.0833": {
+              "post": [-26, 0, 0],
+              "lerp_mode": "catmullrom"
+            },
+            "1.2083": {
+              "post": [-40, 0, 0],
+              "lerp_mode": "catmullrom"
+            },
+            "1.4167": {
+              "post": [-28, 0, 0],
+              "lerp_mode": "catmullrom"
+            },
+            "1.7083": {
+              "post": [7, 0, 0],
+              "lerp_mode": "catmullrom"
+            },
+            "2.0833": {
+              "post": [2, 0, 0],
+              "lerp_mode": "catmullrom"
+            },
+            "2.5": {
+              "post": [0, 0, 0],
+              "lerp_mode": "catmullrom"
+            }
+          },
+          "position": {
+            "0.0": {
+              "pre": [0, 0, 0],
+              "post": [0, 0, 0],
+              "lerp_mode": "catmullrom"
+            },
+            "0.375": {
+              "post": [0, -0.3, 0.4],
+              "lerp_mode": "catmullrom"
+            },
+            "0.75": {
+              "post": [0, -0.5, 0.8],
+              "lerp_mode": "catmullrom"
+            },
+            "0.8333": {
+              "post": [0.3, -0.55, 0.85],
+              "lerp_mode": "catmullrom"
+            },
+            "0.9167": {
+              "post": [-0.3, -0.6, 0.9],
+              "lerp_mode": "catmullrom"
+            },
+            "1.0": {
+              "post": [0.25, -0.65, 0.95],
+              "lerp_mode": "catmullrom"
+            },
+            "1.0833": {
+              "post": [-0.25, -0.7, 1.0],
+              "lerp_mode": "catmullrom"
+            },
+            "1.2083": {
+              "post": [0, 1.4, 0.6],
+              "lerp_mode": "catmullrom"
+            },
+            "1.4167": {
+              "post": [0, 0.6, 0],
+              "lerp_mode": "catmullrom"
+            },
+            "1.7083": {
+              "post": [0, -0.4, 0.3],
+              "lerp_mode": "catmullrom"
+            },
+            "2.0833": {
+              "post": [0, 0, 0],
+              "lerp_mode": "catmullrom"
+            }
+          }
+        }
+      },
+      "sound_effects": {
+        "0.0": {
+          "effect": "move.dracometeor.charge"
+        },
+        "1.2": {
+          "effect": "move.dracometeor.actor"
+        }
+      },
+      "particle_effects": {
+        "0.0": {
+          "effect": "cobblemon:dracometeor_charge",
+          "locator": "middle"
+        },
+        "0.0833": {
+          "effect": "cobblemon:dracometeor_chargeorb",
+          "locator": "middle"
+        },
+        "1.2": {
+          "effect": "cobblemon:dracometeor_orb",
+          "locator": "middle"
+        },
+        "1.2083": {
+          "effect": "cobblemon:dracometeor_orbtrail",
+          "locator": "middle"
+        },
+        "1.5417": {
+          "effect": "cobblemon:dracometeor_skyburst",
+          "locator": "middle"
+        }
+      }
+    }
+  }
+}

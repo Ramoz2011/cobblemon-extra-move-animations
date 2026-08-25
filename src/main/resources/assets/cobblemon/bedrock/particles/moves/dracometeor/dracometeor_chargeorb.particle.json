@@ -1,0 +1,60 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "cobblemon:dracometeor_chargeorb",
+      "basic_render_parameters": {
+        "material": "particles_add",
+        "texture": "textures/particles/generic/orb/mediumfadeorb"
+      }
+    },
+    "curves": {
+      "variable.grow": {
+        "type": "linear",
+        "input": "v.particle_age",
+        "horizontal_range": "v.particle_lifetime",
+        "nodes": [0, 0.12, 0.2, 0.16, 0.32, 0.26, 0.48, 0.38, 0.66, 0.54, 0.86, 0.72, 1.0]
+      }
+    },
+    "components": {
+      "minecraft:emitter_rate_instant": {
+        "num_particles": 1
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 1.12
+      },
+      "minecraft:emitter_shape_point": {
+        "offset": [0, 0.6, 0]
+      },
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": 1.12
+      },
+      "minecraft:particle_initial_speed": 0,
+      "minecraft:particle_motion_dynamic": {},
+      "minecraft:particle_appearance_billboard": {
+        "size": [
+          "(1.25*v.grow)*(1+(0.08*math.sin(v.particle_age*1600)))",
+          "(1.25*v.grow)*(1+(0.08*math.sin(v.particle_age*1600)))"
+        ],
+        "facing_camera_mode": "rotate_xyz",
+        "uv": {
+          "texture_width": 99,
+          "texture_height": 9,
+          "uv": [0, 0],
+          "uv_size": [9, 9]
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": {
+          "interpolant": "v.particle_age/v.particle_lifetime",
+          "gradient": {
+            "0.0": "#FFFFFFFF",
+            "0.35": "#FFE0AAFF",
+            "0.7": "#FFB56BFF",
+            "1.0": "#FF8A46F0"
+          }
+        }
+      }
+    }
+  }
+}

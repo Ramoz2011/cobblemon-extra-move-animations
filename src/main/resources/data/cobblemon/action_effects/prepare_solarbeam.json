@@ -1,0 +1,49 @@
+{
+  "timeline": [
+    {
+      "type": "add_holds",
+      "holds": ["effects"]
+    },
+    {
+      "type": "animation",
+      "animation": ["solarbeam_charge", "special"]
+    },
+    {
+      "type": "sequence",
+      "keyframes": [
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:solarbeam_sunrays",
+          "locators": ["special", "target"]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:solarbeam_gather",
+          "locators": ["special", "target"]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:solarbeam_sunorb",
+          "locators": ["special", "target"]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:solarbeam_leaves",
+          "locators": ["special", "target"]
+        }
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": 2.0
+    },
+    {
+      "type": "remove_holds",
+      "holds": ["effects"]
+    },
+    {
+      "type": "pause",
+      "pause": 0.15
+    }
+  ]
+}

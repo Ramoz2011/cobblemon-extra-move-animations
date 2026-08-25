@@ -1,0 +1,161 @@
+{
+  "move.hyperbeam.charge": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/psychic/psychic_actor",
+        "volume": 0.85,
+        "pitch": 0.8
+      }
+    ]
+  },
+  "move.hyperbeam.actor": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/thunder/thunder_actor",
+        "volume": 1.0,
+        "pitch": 0.9
+      }
+    ]
+  },
+  "move.hyperbeam.target": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/thunder/thunder_target",
+        "volume": 1.0,
+        "pitch": 0.9
+      }
+    ]
+  },
+  "move.hydropump.charge": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/waterpulse/waterpulse_actor",
+        "volume": 0.9,
+        "pitch": 0.85
+      }
+    ]
+  },
+  "move.hydropump.actor": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/watergun/watergun_actor",
+        "volume": 1.0,
+        "pitch": 0.8
+      }
+    ]
+  },
+  "move.hydropump.target": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/watergun/watergun_target",
+        "volume": 1.0,
+        "pitch": 0.85
+      }
+    ]
+  },
+  "move.voltswitch.charge": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/thundershock/thundershock_actor",
+        "volume": 0.9
+      }
+    ]
+  },
+  "move.voltswitch.actor": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/thunderbolt/thunderbolt_actor",
+        "volume": 1.0
+      }
+    ]
+  },
+  "move.voltswitch.target": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/thunderbolt/thunderbolt_target",
+        "volume": 1.0
+      }
+    ]
+  },
+  "move.dracometeor.charge": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/eruption/eruption_actor",
+        "volume": 0.85,
+        "pitch": 0.8
+      }
+    ]
+  },
+  "move.dracometeor.actor": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/lavaplume/lavaplume_actor",
+        "volume": 1.0,
+        "pitch": 0.8
+      }
+    ]
+  },
+  "move.dracometeor.target": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/eruption/eruption_target",
+        "volume": 1.0,
+        "pitch": 0.9
+      }
+    ]
+  },
+  "move.earthquake.actor": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/bulldoze/bulldoze_actor",
+        "volume": 1.0,
+        "pitch": 0.7
+      }
+    ]
+  },
+  "move.earthquake.rumble": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/eruption/eruption_actor",
+        "volume": 0.9,
+        "pitch": 0.55
+      }
+    ]
+  },
+  "move.earthquake.target": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/bulldoze/bulldoze_target",
+        "volume": 1.0,
+        "pitch": 0.75
+      }
+    ]
+  },
+  "move.solarbeam.charge": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/magicalleaf/magicalleaf_actor_1",
+        "volume": 0.9,
+        "pitch": 0.7
+      }
+    ]
+  },
+  "move.solarbeam.actor": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/icebeam/icebeam_actor",
+        "volume": 1.0,
+        "pitch": 0.85
+      }
+    ]
+  },
+  "move.solarbeam.target": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/magicalleaf/magicalleaf_target",
+        "volume": 1.0,
+        "pitch": 0.8
+      }
+    ]
+  }
+}

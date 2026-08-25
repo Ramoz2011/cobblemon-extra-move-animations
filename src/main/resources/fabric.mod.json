@@ -11,6 +11,7 @@
     "sources": "https://github.com/Ramoz2011/cobblemon-extra-move-animations"
   },
   "license": "MIT",
+  "icon": "assets/cobblemon_extra_move_animation/icon.png",
   "environment": "*",
   "entrypoints": {
     "fabric-datagen": [

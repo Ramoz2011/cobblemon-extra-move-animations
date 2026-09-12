@@ -1,7 +1,7 @@
 # Cobblemon: Extra Move Animations
 
 A [Fabric](https://fabricmc.net/) mod that adds custom battle animations, particle
-effects, and sound design to [Cobblemon](https://cobblemon.com/) for eight moves
+effects, and sound design to [Cobblemon](https://cobblemon.com/) for eleven moves
 the base mod doesn't animate yet.
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -20,6 +20,9 @@ the base mod doesn't animate yet.
 | **Draco Meteor** | Dragon | A skyward orb calls down a rain of draconic meteors. |
 | **Earthquake** | Ground | A ground-slam sends a shattering ring of rock across the field. |
 | **Solar Beam** | Grass | A two-turn charge gathers sunlight before releasing a beam of solar energy. |
+| **Knock Off** | Dark | A dark, purple-tinged strike knocks the target's held item loose. |
+| **Make It Rain** | Steel | A hoard of gold is hurled skyward, then pours back down through a golden void as a torrent of coins. |
+| **Triple Axel** | Ice | An axel spin into three rapid slashes, each releasing a crescent of ice that carves a glowing X and a vertical gash. |
 
 ## How it works
 
@@ -36,6 +39,9 @@ custom gameplay Java** — every effect is defined declaratively:
   stateful actor animations (e.g. charge poses) referenced from the timeline.
 - `assets/cobblemon/sounds.json` — sound events, largely aliased from
   existing official Cobblemon move audio rather than new recordings.
+- `assets/cobblemon/textures/particle/moves/*.png` — the handful of custom
+  sprite sheets the official atlas doesn't cover; the generators for these
+  live in `docs/tools/`.
 
 Because everything is JSON, the mod loads its effects straight into
 Cobblemon's existing systems with no mixins into gameplay logic — the Java

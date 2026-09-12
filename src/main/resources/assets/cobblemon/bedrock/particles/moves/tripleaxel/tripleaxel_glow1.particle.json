@@ -1,0 +1,103 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "cobblemon:tripleaxel_glow1",
+      "basic_render_parameters": {
+        "material": "particles_blend",
+        "texture": "textures/particles/generic/orb/scaling"
+      }
+    },
+    "curves": {
+      "variable.t": {
+        "type": "linear",
+        "input": "v.particle_age",
+        "horizontal_range": "v.particle_lifetime",
+        "nodes": [
+          0,
+          1
+        ]
+      },
+      "variable.taper": {
+        "type": "linear",
+        "input": "v.particle_random_1",
+        "horizontal_range": 1,
+        "nodes": [
+          0,
+          0.36,
+          0.64,
+          0.84,
+          0.96,
+          1,
+          0.96,
+          0.84,
+          0.64,
+          0.36,
+          0
+        ]
+      },
+      "variable.g": {
+        "type": "linear",
+        "input": "v.particle_age",
+        "horizontal_range": "v.particle_lifetime",
+        "nodes": [
+          0.82,
+          1.12
+        ]
+      }
+    },
+    "components": {
+      "minecraft:emitter_initialization": {
+        "creation_expression": "v.target_deltaz=5;"
+      },
+      "minecraft:emitter_rate_instant": {
+        "num_particles": 45
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 0.6
+      },
+      "minecraft:emitter_shape_point": {},
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": 0.5
+      },
+      "minecraft:particle_initial_speed": 0,
+      "minecraft:particle_motion_parametric": {
+        "relative_position": [
+          "((0.45+(0.4*q.entity_radius))*(1-v.t))+(-v.target_deltax*v.t)+(v.g*(-(((0.72+(0.3*q.entity_radius))+((v.particle_random_3-0.5)*0.3*0.7*v.taper))*math.sin((v.particle_random_1-0.5)*190))))",
+          "((0.1+(0.25*q.entity_radius))*(1-v.t))+(v.target_deltay*v.t)+(v.g*(((0.72+(0.3*q.entity_radius))+((v.particle_random_3-0.5)*0.3*0.7*v.taper))*math.cos((v.particle_random_1-0.5)*190)))",
+          "(-(0.55+(0.5*q.entity_radius))*(1-v.t))+(-v.target_deltaz*v.t)+((v.particle_random_2-0.5)*0.18)"
+        ]
+      },
+      "minecraft:particle_appearance_billboard": {
+        "size": [
+          "(0.2+(v.particle_random_4*0.14))*(0.35+(0.65*v.taper))*1.0",
+          "(0.2+(v.particle_random_4*0.14))*(0.35+(0.65*v.taper))*1.0"
+        ],
+        "facing_camera_mode": "rotate_xyz",
+        "uv": {
+          "texture_width": 8,
+          "texture_height": 32,
+          "uv": [
+            0,
+            0
+          ],
+          "uv_size": [
+            8,
+            8
+          ]
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": {
+          "interpolant": "v.particle_age / v.particle_lifetime",
+          "gradient": {
+            "0.0": "#00EAFBFF",
+            "0.12": "#B3EAFBFF",
+            "0.75": "#A69EE4FF",
+            "1.0": "#006FD0FF"
+          }
+        }
+      }
+    }
+  }
+}

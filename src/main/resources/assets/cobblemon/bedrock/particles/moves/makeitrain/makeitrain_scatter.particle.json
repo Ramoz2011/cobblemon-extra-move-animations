@@ -1,0 +1,111 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "cobblemon:makeitrain_scatter",
+      "basic_render_parameters": {
+        "material": "particles_alpha",
+        "texture": "textures/particles/moves/makeitrain_coin"
+      }
+    },
+    "curves": {
+      "variable.fade": {
+        "type": "linear",
+        "input": "v.particle_age",
+        "horizontal_range": "v.particle_lifetime",
+        "nodes": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.95,
+          0.6,
+          0.0
+        ]
+      }
+    },
+    "components": {
+      "minecraft:emitter_rate_instant": {
+        "num_particles": 42
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 0.1
+      },
+      "minecraft:emitter_shape_disc": {
+        "offset": [
+          0,
+          0.55,
+          0
+        ],
+        "plane_normal": "y",
+        "radius": "0.9+v.entity_radius",
+        "direction": [
+          "(v.particle_random_1-0.5)*1.9",
+          "math.random(0.45,1.1)",
+          "(v.particle_random_2-0.5)*1.9"
+        ]
+      },
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": "math.random(1.15,1.55)"
+      },
+      "minecraft:particle_initial_speed": "math.random(2.8,6.2)",
+      "minecraft:particle_motion_dynamic": {
+        "linear_acceleration": [
+          0,
+          -26,
+          0
+        ]
+      },
+      "minecraft:particle_motion_collision": {
+        "collision_radius": 0.11,
+        "collision_drag": 4.5,
+        "coefficient_of_restitution": 0.45
+      },
+      "minecraft:particle_initial_spin": {
+        "rotation": "math.random(0,360)",
+        "rotation_rate": "(math.random_integer(0,1)*2-1)*math.random(180,420)"
+      },
+      "minecraft:particle_appearance_billboard": {
+        "size": [
+          "(0.28+(0.15*v.particle_random_4))*v.fade",
+          "(0.28+(0.15*v.particle_random_4))*v.fade"
+        ],
+        "facing_camera_mode": "rotate_xyz",
+        "uv": {
+          "texture_width": 16,
+          "texture_height": 128,
+          "flipbook": {
+            "base_UV": [
+              0,
+              0
+            ],
+            "size_UV": [
+              16,
+              16
+            ],
+            "step_UV": [
+              0,
+              16
+            ],
+            "frames_per_second": 20,
+            "max_frame": 8,
+            "loop": true
+          }
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": {
+          "interpolant": "v.particle_age / v.particle_lifetime",
+          "gradient": {
+            "0.0": "#FFFFFFFF",
+            "0.6": "#FFFFFFFF",
+            "0.82": "#FFFFF0A8",
+            "1.0": "#FFFFFBE6"
+          }
+        }
+      }
+    }
+  }
+}

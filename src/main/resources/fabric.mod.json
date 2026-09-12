@@ -34,6 +34,6 @@
     "fabricloader": ">=${loader_version}",
     "fabric-api": "*",
     "minecraft": "${minecraft_version}",
-    "cobblemon": ">=1.6.0"
+    "cobblemon": ">=1.7.3"
   }
 }

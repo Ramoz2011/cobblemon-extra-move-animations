@@ -62,6 +62,10 @@ side only exists for the standard Fabric mod entrypoints.
    Kotlin, Cobblemon, and this mod's jar.
 3. Launch the game.
 
+**Playing on a server?** Install the mod on the server as well as on every
+player's client. Cobblemon runs move animations on the server, so if the mod
+is only on your client, nothing will show up.
+
 ## Building from source
 
 ```sh

@@ -1,0 +1,401 @@
+{
+  "timeline": [
+    {
+      "type": "add_holds",
+      "holds": ["effects", "recoil"]
+    },
+    {
+      "type": "molang",
+      "expressions": "v.bb_s = (q.user.species.hitbox_width > 0 && q.user.species.hitbox_fixed == 0) ? math.clamp(q.user.width / q.user.species.hitbox_width, 0.1, 8) : math.max(q.user.species.base_scale, 0.1); v.bb_units = (q.target.width > 0) ? math.clamp((q.user.distance_to_pos(q.target.x, q.target.y, q.target.z) - 0.5 * q.target.width - 0.4 * math.max(q.user.width, q.user.height)) * 16 / v.bb_s, 0, 256) : -1"
+    },
+    {
+      "type": "parallel",
+      "keyframes": [
+        {
+          "type": "animation",
+          "animation": ["bravebird"]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == true && q.missed == false && q.hurt(q.entity.uuid) == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'actor_recoil', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == true && q.missed == false && q.hurt(q.entity.uuid) == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'actor', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == true && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'actor_miss', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 0 && v.bb_units < 4 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_0', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 4 && v.bb_units < 12 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_1', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 12 && v.bb_units < 20 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_2', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 20 && v.bb_units < 28 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_3', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 28 && v.bb_units < 36 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_4', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 36 && v.bb_units < 44 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_5', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 44 && v.bb_units < 52 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_6', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 52 && v.bb_units < 60 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_7', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 60 && v.bb_units < 68 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_8', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 68 && v.bb_units < 76 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_9', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 76 && v.bb_units < 84 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_10', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 84 && v.bb_units < 92 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_11', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 92 && v.bb_units < 100 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_12', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 100 && v.bb_units < 108 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_13', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 108 && v.bb_units < 116 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_14', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 116 && v.bb_units < 124 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_15', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 124 && v.bb_units < 132 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_16', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 132 && v.bb_units < 140 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_17', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 140 && v.bb_units < 148 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_18', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 148 && v.bb_units < 156 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_19', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 156 && v.bb_units < 164 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_20', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 164 && v.bb_units < 172 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_21', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 172 && v.bb_units < 180 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_22', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 180 && v.bb_units < 188 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_23', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 188 && v.bb_units < 196 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_24', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 196 && v.bb_units < 204 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_25', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 204 && v.bb_units < 212 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_26', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 212 && v.bb_units < 220 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_27', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 220 && v.bb_units < 228 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_28', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 228 && v.bb_units < 236 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_29', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 236 && v.bb_units < 244 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_30', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 244 && v.bb_units < 252 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_31', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 252 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_32', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "!(v.bb_units >= 0) && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dash_8', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 0 && v.bb_units < 4 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_0', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 4 && v.bb_units < 12 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_1', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 12 && v.bb_units < 20 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_2', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 20 && v.bb_units < 28 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_3', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 28 && v.bb_units < 36 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_4', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 36 && v.bb_units < 44 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_5', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 44 && v.bb_units < 52 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_6', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 52 && v.bb_units < 60 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_7', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 60 && v.bb_units < 68 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_8', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 68 && v.bb_units < 76 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_9', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 76 && v.bb_units < 84 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_10', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 84 && v.bb_units < 92 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_11', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 92 && v.bb_units < 100 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_12', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 100 && v.bb_units < 108 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_13', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 108 && v.bb_units < 116 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_14', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 116 && v.bb_units < 124 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_15', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 124 && v.bb_units < 132 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_16', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 132 && v.bb_units < 140 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_17', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 140 && v.bb_units < 148 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_18', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 148 && v.bb_units < 156 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_19', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 156 && v.bb_units < 164 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_20', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 164 && v.bb_units < 172 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_21', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 172 && v.bb_units < 180 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_22', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 180 && v.bb_units < 188 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_23', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 188 && v.bb_units < 196 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_24', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 196 && v.bb_units < 204 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_25', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 204 && v.bb_units < 212 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_26', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 212 && v.bb_units < 220 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_27', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 220 && v.bb_units < 228 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_28', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 228 && v.bb_units < 236 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_29', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 236 && v.bb_units < 244 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_30', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 244 && v.bb_units < 252 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_31', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.bb_units >= 252 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_32', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "!(v.bb_units >= 0) && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'dashmiss_8', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false && q.hurt(q.entity.uuid) == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('bravebird', 'target', 'endures_primary_animations'))"]
+        }
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": 0.85
+    },
+    {
+      "type": "remove_holds",
+      "holds": ["effects"]
+    },
+    {
+      "type": "pause",
+      "pause": 0.16
+    },
+    {
+      "type": "remove_holds",
+      "holds": ["recoil"]
+    },
+    {
+      "type": "pause",
+      "pause": 0.61
+    }
+  ]
+}

@@ -1,0 +1,227 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "cobblemon:focusblast_orbmotes",
+      "basic_render_parameters": {
+        "material": "particles_blend",
+        "texture": "textures/particles/generic/orb/glowing_dots_cyan"
+      }
+    },
+    "curves": {
+      "variable.fb_s": {
+        "type": "linear",
+        "input": "v.particle_age",
+        "horizontal_range": 1.6,
+        "nodes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.043,
+          0.1094,
+          0.1992,
+          0.3125,
+          0.4492,
+          0.6094,
+          0.793,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "variable.fb_w": {
+        "type": "linear",
+        "input": "v.particle_age",
+        "horizontal_range": 1.6,
+        "nodes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.043,
+          0.8438,
+          0.352,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "variable.fb_rad": {
+        "type": "linear",
+        "input": "v.particle_age",
+        "horizontal_range": 1.6,
+        "nodes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.08,
+          0.29,
+          0.4707,
+          0.623,
+          0.7475,
+          0.8455,
+          0.9179,
+          0.9945,
+          1.1052,
+          1.1031,
+          0.9957,
+          0.9156,
+          1.0,
+          0.99,
+          0.98,
+          0.97,
+          0.96,
+          0.95,
+          0.94,
+          0.93,
+          0.92,
+          1.242,
+          1.564,
+          1.886,
+          2.208,
+          2.53
+        ]
+      },
+      "variable.fb_sz": {
+        "type": "linear",
+        "input": "v.particle_age",
+        "horizontal_range": 1.6,
+        "nodes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.08,
+          0.29,
+          0.4707,
+          0.623,
+          0.7475,
+          0.8455,
+          0.9179,
+          0.9945,
+          1.1052,
+          1.1031,
+          0.9957,
+          0.9156,
+          1.0,
+          0.99,
+          0.98,
+          0.97,
+          0.96,
+          0.95,
+          0.94,
+          0.93,
+          0.92,
+          0.812,
+          0.46,
+          0.23,
+          0,
+          0
+        ]
+      }
+    },
+    "components": {
+      "minecraft:emitter_initialization": {
+        "creation_expression": "v.target_deltax = 0; v.target_deltay = 1; v.target_deltaz = 5; v.entity_height = 1; v.entity_width = 1;",
+        "per_update_expression": "v.R = math.clamp(0.30 + 0.20 * v.entity_height, 0.42, 0.85);v.hy = math.min(v.entity_height, 3.6) + 0.9 * v.R;v.hz = -(0.25 * v.entity_width + 0.45 * v.R + math.clamp(v.entity_height - 3.6, 0, 1) * (0.3 * v.entity_width + v.R));"
+      },
+      "minecraft:emitter_rate_instant": {
+        "num_particles": 36
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 1.95
+      },
+      "minecraft:emitter_shape_point": {},
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": 1.55
+      },
+      "minecraft:particle_initial_speed": 0,
+      "minecraft:particle_motion_parametric": {
+        "relative_position": [
+          "(-v.target_deltax * v.fb_s) + (v.R * v.fb_rad * (0.86 + 0.2 * v.particle_random_3)) * math.sqrt(1 - math.pow(2 * v.particle_random_2 - 1, 2)) * math.cos((360 * v.particle_random_1 + (330 + 330 * v.particle_random_4) * v.particle_age))",
+          "(v.hy + (v.target_deltay - v.hy) * v.fb_s + 0.12 * v.fb_w) + (v.R * v.fb_rad * (0.86 + 0.2 * v.particle_random_3)) * (2 * v.particle_random_2 - 1)",
+          "(v.hz - (v.target_deltaz + v.hz) * v.fb_s + 0.3 * v.fb_w) + (v.R * v.fb_rad * (0.86 + 0.2 * v.particle_random_3)) * math.sqrt(1 - math.pow(2 * v.particle_random_2 - 1, 2)) * math.sin((360 * v.particle_random_1 + (330 + 330 * v.particle_random_4) * v.particle_age))"
+        ]
+      },
+      "minecraft:particle_appearance_billboard": {
+        "size": [
+          "(0.07 + 0.11 * v.R) * v.fb_sz * (0.8 + 0.5 * v.particle_random_2) * (0.75 + 0.25 * math.sin(v.particle_age * (1100 + 900 * v.particle_random_3) + 360 * v.particle_random_1))",
+          "(0.07 + 0.11 * v.R) * v.fb_sz * (0.8 + 0.5 * v.particle_random_2) * (0.75 + 0.25 * math.sin(v.particle_age * (1100 + 900 * v.particle_random_3) + 360 * v.particle_random_1))"
+        ],
+        "facing_camera_mode": "rotate_xyz",
+        "uv": {
+          "texture_width": 8,
+          "texture_height": 32,
+          "uv": [
+            0,
+            0
+          ],
+          "uv_size": [
+            8,
+            8
+          ]
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": {
+          "interpolant": "v.particle_random_3",
+          "gradient": {
+            "0.0": "#FFFFFFFF",
+            "0.55": "#FFC8F6FF",
+            "1.0": "#FFA0D2FF"
+          }
+        }
+      }
+    }
+  }
+}

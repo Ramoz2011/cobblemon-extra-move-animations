@@ -1,7 +1,7 @@
 # Cobblemon: Extra Move Animations
 
 A [Fabric](https://fabricmc.net/) mod that adds custom battle animations, particle
-effects, and sound design to [Cobblemon](https://cobblemon.com/) for eleven moves
+effects, and sound design to [Cobblemon](https://cobblemon.com/) for fourteen moves
 the base mod doesn't animate yet.
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -23,6 +23,9 @@ the base mod doesn't animate yet.
 | **Knock Off** | Dark | A dark, purple-tinged strike knocks the target's held item loose. |
 | **Make It Rain** | Steel | A hoard of gold is hurled skyward, then pours back down through a golden void as a torrent of coins. |
 | **Triple Axel** | Ice | An axel spin into three rapid slashes, each releasing a crescent of ice that carves a glowing X and a vertical gash. |
+| **Darkest Lariat** | Dark | Crimson orbs ignite at each fist as the user spins into the target, scattering black-and-red shards on impact. |
+| **Focus Blast** | Fighting | Focused energy forms a white-hot orb with a cyan halo, which the user hurls at the target. |
+| **Brave Bird** | Flying | The user dives low in a bird of cyan light and crashes into the target, then recoil sparks crackle over it. |
 
 ## How it works
 

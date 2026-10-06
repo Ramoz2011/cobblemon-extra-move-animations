@@ -1,0 +1,193 @@
+{
+  "timeline": [
+    {
+      "type": "add_holds",
+      "holds": [
+        "effects"
+      ]
+    },
+    {
+      "type": "molang",
+      "expressions": "v.dl_units = (q.target.width > 0) ? math.clamp((q.user.distance_to_pos(q.target.x, q.target.y, q.target.z) - 0.5 * q.target.width - 0.53 * math.max(q.user.width, q.user.height)) * 16 / math.max(q.user.species.base_scale, 0.1), 0, 240) : -1"
+    },
+    {
+      "type": "parallel",
+      "keyframes": [
+        {
+          "type": "entity_molang",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'actor', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 8 && v.dl_units < 24",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_1', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 24 && v.dl_units < 40",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_2', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 40 && v.dl_units < 56",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_3', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 56 && v.dl_units < 72",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_4', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 72 && v.dl_units < 88",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_5', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 88 && v.dl_units < 104",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_6', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 104 && v.dl_units < 120",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_7', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 120 && v.dl_units < 136",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_8', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 136 && v.dl_units < 152",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_9', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 152 && v.dl_units < 168",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_10', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 168 && v.dl_units < 184",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_11', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 184 && v.dl_units < 200",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_12', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 200 && v.dl_units < 216",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_13', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 216 && v.dl_units < 232",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_14', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.dl_units >= 232",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_15', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "!(v.dl_units >= 0)",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'dash_3', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:darkestlariat_gather",
+          "locators": [
+            "middle"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:darkestlariat_aura",
+          "locators": [
+            "root"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:darkestlariat_auraglint",
+          "locators": [
+            "root"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:darkestlariat_swoosh",
+          "locators": [
+            "root"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:darkestlariat_swooshdark",
+          "locators": [
+            "root"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('darkestlariat', 'target', 'endures_primary_animations'))"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": 0.75
+    },
+    {
+      "type": "remove_holds",
+      "holds": [
+        "effects"
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": 0.9
+    }
+  ]
+}

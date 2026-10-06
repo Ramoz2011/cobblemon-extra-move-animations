@@ -1,0 +1,246 @@
+{
+  "timeline": [
+    {
+      "type": "add_holds",
+      "holds": [
+        "effects"
+      ]
+    },
+    {
+      "type": "parallel",
+      "keyframes": [
+        {
+          "type": "entity_molang",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('focusblast', 'actor', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == false",
+          "effect": "cobblemon:focusblast_orb",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == true",
+          "effect": "cobblemon:focusblast_orb_miss",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == false",
+          "effect": "cobblemon:focusblast_orbaura",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == true",
+          "effect": "cobblemon:focusblast_orbaura_miss",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == false",
+          "effect": "cobblemon:focusblast_orbmotes",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == true",
+          "effect": "cobblemon:focusblast_orbmotes_miss",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == false",
+          "effect": "cobblemon:focusblast_orbswirl",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == true",
+          "effect": "cobblemon:focusblast_orbswirl_miss",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == false",
+          "effect": "cobblemon:focusblast_orbrays",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == true",
+          "effect": "cobblemon:focusblast_orbrays_miss",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == false",
+          "effect": "cobblemon:focusblast_orbglints",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == true",
+          "effect": "cobblemon:focusblast_orbglints_miss",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == false",
+          "effect": "cobblemon:focusblast_trail",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == true",
+          "effect": "cobblemon:focusblast_trail_miss",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == false",
+          "effect": "cobblemon:focusblast_motes",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.missed == true",
+          "effect": "cobblemon:focusblast_motes_miss",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:focusblast_launchring",
+          "locators": [
+            "root"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:focusblast_launchburst",
+          "locators": [
+            "root"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:focusblast_gather",
+          "locators": [
+            "root"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:focusblast_gatherlines",
+          "locators": [
+            "root"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false && q.hurt(q.entity.uuid) == true",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('focusblast', 'target', 'endures_primary_animations'))"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": 1.4
+    },
+    {
+      "type": "remove_holds",
+      "holds": [
+        "effects"
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": 0.8
+    }
+  ]
+}

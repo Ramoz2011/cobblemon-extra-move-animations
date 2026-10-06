@@ -3,7 +3,7 @@
   "id": "cobblemon_extra_move_animation",
   "version": "${version}",
   "name": "Cobblemon Extra Move Animations",
-  "description": "Adds custom battle animations, particle effects, and sound design for eleven Pokémon moves not yet animated by Cobblemon: U-turn, Moonblast, Hyper Beam, Hydro Pump, Volt Switch, Draco Meteor, Earthquake, Solar Beam, Knock Off, Make It Rain, and Triple Axel.",
+  "description": "Adds custom battle animations, particle effects, and sound design for fourteen Pokémon moves not yet animated by Cobblemon: U-turn, Moonblast, Hyper Beam, Hydro Pump, Volt Switch, Draco Meteor, Earthquake, Solar Beam, Knock Off, Make It Rain, Triple Axel, Darkest Lariat, Focus Blast, and Brave Bird.",
   "authors": ["Ramoz2011"],
   "contact": {
     "homepage": "https://github.com/Ramoz2011/cobblemon-extra-move-animations",

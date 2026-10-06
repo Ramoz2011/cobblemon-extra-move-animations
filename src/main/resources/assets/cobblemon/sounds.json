@@ -274,5 +274,158 @@
         "pitch": 0.9
       }
     ]
+  },
+  "move.darkestlariat.charge": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/seismictoss/seismictoss_actor",
+        "volume": 0.85,
+        "pitch": 0.75
+      }
+    ]
+  },
+  "move.darkestlariat.spin": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/aerialace/aerialace_actor_2",
+        "volume": 1.0,
+        "pitch": 0.7
+      }
+    ]
+  },
+  "move.darkestlariat.spin2": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/aerialace/aerialace_actor_2",
+        "volume": 0.9,
+        "pitch": 0.62
+      }
+    ]
+  },
+  "move.darkestlariat.return": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/aerialace/aerialace_actor_2",
+        "volume": 0.6,
+        "pitch": 1.05
+      }
+    ]
+  },
+  "move.darkestlariat.target": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/bodyslam/bodyslam_target",
+        "volume": 1.0,
+        "pitch": 0.8
+      }
+    ]
+  },
+  "move.focusblast.focus": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/confusion/confusion_actor",
+        "volume": 0.75,
+        "pitch": 0.8
+      }
+    ]
+  },
+  "move.focusblast.charge": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/protect/protect_actor",
+        "volume": 0.85,
+        "pitch": 0.75
+      }
+    ]
+  },
+  "move.focusblast.launch": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/seismictoss/seismictoss_actor",
+        "volume": 0.9,
+        "pitch": 0.9
+      }
+    ]
+  },
+  "move.focusblast.target": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/shadowball/shadowball_target",
+        "volume": 1.0,
+        "pitch": 0.75
+      }
+    ]
+  },
+  "move.bravebird.flap": {
+    "sounds": [
+      {
+        "name": "cobblemon:animation/wings/plumage_wing_flap_medium_2",
+        "volume": 1.0,
+        "pitch": 1.1
+      }
+    ]
+  },
+  "move.bravebird.charge": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/gust/gust_actor",
+        "volume": 0.9,
+        "pitch": 1.15
+      }
+    ]
+  },
+  "move.bravebird.dash": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/quickattack/quickattack_actor",
+        "volume": 1.0,
+        "pitch": 0.85
+      }
+    ]
+  },
+  "move.bravebird.boom": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/aerialace/aerialace_actor_1",
+        "volume": 1.0,
+        "pitch": 0.7
+      }
+    ]
+  },
+  "move.bravebird.impact": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/bodyslam/bodyslam_target",
+        "volume": 1.0,
+        "pitch": 1.1
+      }
+    ]
+  },
+  "move.bravebird.recoil": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/gust/gust_target",
+        "volume": 0.7,
+        "pitch": 1.5
+      }
+    ]
+  },
+  "move.bravebird.return": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/aerialace/aerialace_actor_2",
+        "volume": 0.6,
+        "pitch": 1.35
+      }
+    ]
+  },
+  "move.bravebird.whoosh": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/aerialace/aerialace_actor_2",
+        "volume": 0.9,
+        "pitch": 0.85
+      }
+    ]
   }
 }

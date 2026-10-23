@@ -1,0 +1,401 @@
+{
+  "timeline": [
+    {
+      "type": "add_holds",
+      "holds": ["effects", "recoil"]
+    },
+    {
+      "type": "molang",
+      "expressions": "v.fb_s = (q.user.species.hitbox_width > 0 && q.user.species.hitbox_fixed == 0) ? math.clamp(q.user.width / q.user.species.hitbox_width, 0.1, 8) : math.max(q.user.species.base_scale, 0.1); v.fb_units = (q.target.width > 0) ? math.clamp((q.user.distance_to_pos(q.target.x, q.target.y, q.target.z) - 0.5 * q.target.width - 0.4 * math.max(q.user.width, q.user.height)) * 16 / v.fb_s, 0, 256) : -1"
+    },
+    {
+      "type": "parallel",
+      "keyframes": [
+        {
+          "type": "animation",
+          "animation": ["flareblitz"]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == true && q.missed == false && q.hurt(q.entity.uuid) == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'actor_recoil', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == true && q.missed == false && q.hurt(q.entity.uuid) == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'actor', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == true && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'actor_miss', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 0 && v.fb_units < 4 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_0', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 4 && v.fb_units < 12 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_1', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 12 && v.fb_units < 20 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_2', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 20 && v.fb_units < 28 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_3', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 28 && v.fb_units < 36 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_4', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 36 && v.fb_units < 44 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_5', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 44 && v.fb_units < 52 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_6', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 52 && v.fb_units < 60 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_7', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 60 && v.fb_units < 68 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_8', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 68 && v.fb_units < 76 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_9', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 76 && v.fb_units < 84 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_10', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 84 && v.fb_units < 92 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_11', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 92 && v.fb_units < 100 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_12', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 100 && v.fb_units < 108 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_13', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 108 && v.fb_units < 116 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_14', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 116 && v.fb_units < 124 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_15', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 124 && v.fb_units < 132 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_16', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 132 && v.fb_units < 140 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_17', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 140 && v.fb_units < 148 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_18', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 148 && v.fb_units < 156 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_19', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 156 && v.fb_units < 164 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_20', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 164 && v.fb_units < 172 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_21', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 172 && v.fb_units < 180 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_22', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 180 && v.fb_units < 188 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_23', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 188 && v.fb_units < 196 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_24', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 196 && v.fb_units < 204 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_25', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 204 && v.fb_units < 212 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_26', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 212 && v.fb_units < 220 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_27', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 220 && v.fb_units < 228 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_28', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 228 && v.fb_units < 236 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_29', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 236 && v.fb_units < 244 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_30', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 244 && v.fb_units < 252 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_31', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 252 && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_32', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "!(v.fb_units >= 0) && q.missed == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dash_8', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 0 && v.fb_units < 4 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_0', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 4 && v.fb_units < 12 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_1', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 12 && v.fb_units < 20 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_2', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 20 && v.fb_units < 28 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_3', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 28 && v.fb_units < 36 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_4', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 36 && v.fb_units < 44 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_5', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 44 && v.fb_units < 52 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_6', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 52 && v.fb_units < 60 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_7', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 60 && v.fb_units < 68 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_8', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 68 && v.fb_units < 76 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_9', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 76 && v.fb_units < 84 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_10', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 84 && v.fb_units < 92 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_11', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 92 && v.fb_units < 100 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_12', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 100 && v.fb_units < 108 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_13', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 108 && v.fb_units < 116 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_14', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 116 && v.fb_units < 124 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_15', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 124 && v.fb_units < 132 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_16', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 132 && v.fb_units < 140 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_17', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 140 && v.fb_units < 148 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_18', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 148 && v.fb_units < 156 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_19', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 156 && v.fb_units < 164 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_20', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 164 && v.fb_units < 172 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_21', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 172 && v.fb_units < 180 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_22', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 180 && v.fb_units < 188 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_23', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 188 && v.fb_units < 196 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_24', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 196 && v.fb_units < 204 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_25', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 204 && v.fb_units < 212 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_26', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 212 && v.fb_units < 220 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_27', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 220 && v.fb_units < 228 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_28', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 228 && v.fb_units < 236 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_29', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 236 && v.fb_units < 244 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_30', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 244 && v.fb_units < 252 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_31', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.fb_units >= 252 && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_32', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "!(v.fb_units >= 0) && q.missed == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'dashmiss_8', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false && q.hurt(q.entity.uuid) == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('flareblitz', 'target', 'endures_primary_animations'))"]
+        }
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": 0.91
+    },
+    {
+      "type": "remove_holds",
+      "holds": ["effects"]
+    },
+    {
+      "type": "pause",
+      "pause": 0.16
+    },
+    {
+      "type": "remove_holds",
+      "holds": ["recoil"]
+    },
+    {
+      "type": "pause",
+      "pause": 0.63
+    }
+  ]
+}

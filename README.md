@@ -1,7 +1,7 @@
 # Cobblemon: Extra Move Animations
 
 A [Fabric](https://fabricmc.net/) mod that adds custom battle animations, particle
-effects, and sound design to [Cobblemon](https://cobblemon.com/) for fourteen moves
+effects, and sound design to [Cobblemon](https://cobblemon.com/) for seventeen moves
 the base mod doesn't animate yet.
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -26,11 +26,14 @@ the base mod doesn't animate yet.
 | **Darkest Lariat** | Dark | Crimson orbs ignite at each fist as the user spins into the target, scattering black-and-red shards on impact. |
 | **Focus Blast** | Fighting | Focused energy forms a white-hot orb with a cyan halo, which the user hurls at the target. |
 | **Brave Bird** | Flying | The user dives low in a bird of cyan light and crashes into the target, then recoil sparks crackle over it. |
+| **Flare Blitz** | Fire | Flame streams pour into the user until it flares white-hot, then it charges as a fireball wrapped in spiralling rings of fire and explodes on the target in flame and black smoke. |
+| **Beat Up** | Dark | Dark afterimages of the user and its real teammates, drawn with their own models, strike one after another: one per hit, so fainted or statused teammates sit it out. |
+| **Counter** | Fighting | The user braces to absorb the blow, its body flushes red-orange, and it strikes back with a white-hot burst of orange sparks. |
 
 ## How it works
 
-Cobblemon's move animations are entirely data-driven, so this mod ships **no
-custom gameplay Java** — every effect is defined declaratively:
+Cobblemon's move animations are data-driven, so almost every effect in this
+mod is defined declaratively:
 
 - `data/cobblemon/action_effects/moves/<move>.json` — a keyframe timeline
   (animations, particle spawns, sounds, pauses) driven by Cobblemon's own
@@ -46,9 +49,20 @@ custom gameplay Java** — every effect is defined declaratively:
   sprite sheets the official atlas doesn't cover; the generators for these
   live in `docs/tools/`.
 
-Because everything is JSON, the mod loads its effects straight into
-Cobblemon's existing systems with no mixins into gameplay logic — the Java
-side only exists for the standard Fabric mod entrypoints.
+Two moves need something the JSON system can't do, so they add a small
+amount of client-side rendering in Java:
+
+- **Beat Up** draws the user's real teammates, with their own Cobblemon
+  models, as dark afterimages, and darkens the target's model on each hit.
+- **Counter** tints the user's model red-orange as it turns the blow around,
+  and flashes the target's model orange on impact.
+
+The move's normal action-effect timeline calls a MoLang function, and the
+server then tells nearby clients what to draw with a small custom packet.
+There are still no mixins and no changes to battle logic: damage, accuracy
+and hit counts all stay Cobblemon's. If a future Cobblemon update breaks the
+Java side, only those two extras switch off and the particle animations keep
+playing.
 
 ## Requirements
 

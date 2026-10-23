@@ -427,5 +427,158 @@
         "pitch": 0.85
       }
     ]
+  },
+  "move.flareblitz.gather": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/lavaplume/lavaplume_actor",
+        "volume": 0.7,
+        "pitch": 1.2
+      }
+    ]
+  },
+  "move.flareblitz.ignite": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/ember/ember_actor",
+        "volume": 1.0,
+        "pitch": 0.75
+      }
+    ]
+  },
+  "move.flareblitz.dash": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/flamethrower/flamethrower_target",
+        "volume": 1.0,
+        "pitch": 0.8
+      }
+    ]
+  },
+  "move.flareblitz.impact": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/bodyslam/bodyslam_target",
+        "volume": 1.0,
+        "pitch": 0.8
+      }
+    ]
+  },
+  "move.flareblitz.blast": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/lavaplume/lavaplume_target",
+        "volume": 0.9,
+        "pitch": 0.75
+      }
+    ]
+  },
+  "move.flareblitz.recoil": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/ember/ember_target",
+        "volume": 0.8,
+        "pitch": 1.35
+      }
+    ]
+  },
+  "move.flareblitz.return": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/aerialace/aerialace_actor_2",
+        "volume": 0.6,
+        "pitch": 1.2
+      }
+    ]
+  },
+  "move.flareblitz.whoosh": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/lavaplume/lavaplume_target",
+        "volume": 0.85,
+        "pitch": 1.15
+      }
+    ]
+  },
+  "move.beatup.summon": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/shadowball/shadowball_actor",
+        "volume": 0.6,
+        "pitch": 1.3
+      }
+    ]
+  },
+  "move.beatup.dash": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/quickattack/quickattack_actor",
+        "volume": 0.55,
+        "pitch": 1.25
+      }
+    ]
+  },
+  "move.beatup.hit": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/pursuit/pursuit_target",
+        "volume": 0.7,
+        "pitch": 1.1
+      }
+    ]
+  },
+  "move.beatup.hit_high": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/pursuit/pursuit_target",
+        "volume": 0.7,
+        "pitch": 1.3
+      }
+    ]
+  },
+  "move.beatup.final": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/crunch/crunch_target",
+        "volume": 0.85,
+        "pitch": 0.85
+      }
+    ]
+  },
+  "move.counter.absorb": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/bulletpunch/bulletpunch_target",
+        "volume": 0.55,
+        "pitch": 0.7
+      }
+    ]
+  },
+  "move.counter.power": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/protect/protect_actor",
+        "volume": 0.6,
+        "pitch": 1.2
+      }
+    ]
+  },
+  "move.counter.strike": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/closecombat/closecombat_actor_1",
+        "volume": 0.8,
+        "pitch": 1.1
+      }
+    ]
+  },
+  "move.counter.impact": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/closecombat/closecombat_target",
+        "volume": 1.0,
+        "pitch": 0.85
+      }
+    ]
   }
 }

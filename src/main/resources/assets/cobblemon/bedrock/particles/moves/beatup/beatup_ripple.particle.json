@@ -1,0 +1,44 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "cobblemon:beatup_ripple",
+      "basic_render_parameters": {
+        "material": "particles_blend",
+        "texture": "textures/particles/generic/ring/giantring_white"
+      }
+    },
+    "components": {
+      "minecraft:emitter_initialization": {
+        "creation_expression": "v.entity_width = 1; v.entity_height = 1;"
+      },
+      "minecraft:emitter_rate_instant": {
+        "num_particles": 1
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 0.2
+      },
+      "minecraft:emitter_shape_point": {
+        "offset": [0, 0.04, 0]
+      },
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": 0.34
+      },
+      "minecraft:particle_initial_speed": 0,
+      "minecraft:particle_motion_dynamic": {},
+      "minecraft:particle_appearance_billboard": {
+        "size": ["(0.8 + 2.6 * (1 - math.pow(1 - (v.particle_age / v.particle_lifetime), 2))) * math.clamp(0.55 + 0.4 * math.max(v.entity_width, v.entity_height), 0.7, 1.8)", "(0.8 + 2.6 * (1 - math.pow(1 - (v.particle_age / v.particle_lifetime), 2))) * math.clamp(0.55 + 0.4 * math.max(v.entity_width, v.entity_height), 0.7, 1.8)"],
+        "facing_camera_mode": "emitter_transform_xz",
+        "uv": {
+          "texture_width": 448,
+          "texture_height": 64,
+          "uv": ["64 * (math.floor(math.clamp((v.particle_age / v.particle_lifetime), 0, 0.999) * 7))", 0],
+          "uv_size": [64, 64]
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": ["0.42", "0.18", "0.75", "0.85 * (1 - (v.particle_age / v.particle_lifetime) * (v.particle_age / v.particle_lifetime))"]
+      }
+    }
+  }
+}

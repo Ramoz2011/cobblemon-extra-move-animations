@@ -1,0 +1,123 @@
+{
+  "timeline": [
+    {
+      "type": "add_holds",
+      "holds": ["effects"]
+    },
+    {
+      "type": "parallel",
+      "keyframes": [
+        {
+          "type": "animation",
+          "animation": ["beatup"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.hit_count <= 1",
+          "entityCondition": "q.entity.is_user == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('beatup', 'actor1', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.hit_count == 2",
+          "entityCondition": "q.entity.is_user == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('beatup', 'actor2', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.hit_count == 3",
+          "entityCondition": "q.entity.is_user == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('beatup', 'actor3', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.hit_count == 4",
+          "entityCondition": "q.entity.is_user == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('beatup', 'actor4', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.hit_count == 5",
+          "entityCondition": "q.entity.is_user == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('beatup', 'actor5', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.hit_count >= 6",
+          "entityCondition": "q.entity.is_user == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('beatup', 'actor6', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.hit_count <= 1 && q.hit_count >= 1",
+          "entityCondition": "q.entity.is_user == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('beatup', 'target1', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.hit_count == 2 && q.hit_count >= 1",
+          "entityCondition": "q.entity.is_user == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('beatup', 'target2', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.hit_count == 3 && q.hit_count >= 1",
+          "entityCondition": "q.entity.is_user == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('beatup', 'target3', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.hit_count == 4 && q.hit_count >= 1",
+          "entityCondition": "q.entity.is_user == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('beatup', 'target4', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.hit_count == 5 && q.hit_count >= 1",
+          "entityCondition": "q.entity.is_user == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('beatup', 'target5', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.hit_count >= 6 && q.hit_count >= 1",
+          "entityCondition": "q.entity.is_user == false",
+          "expressions": ["q.play_animation(q.bedrock_stateful('beatup', 'target6', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.hit_count < 1",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == true",
+          "expressions": ["q.play_animation(q.bedrock_stateful('beatup', 'target_miss', 'endures_primary_animations'))"]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:beatup_wave",
+          "locators": ["root"],
+          "targetLocators": ["root"]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:beatup_streaks",
+          "locators": ["middle"],
+          "targetLocators": ["target"]
+        },
+        {
+          "type": "molang",
+          "expressions": "q.user.beat_up_afterimages(q.hit_count, q.target, 0.55, 0.18)"
+        }
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": "0.58 + 0.18 * (math.clamp(q.hit_count, 1, 6) - 1)"
+    },
+    {
+      "type": "remove_holds",
+      "holds": ["effects"]
+    },
+    {
+      "type": "pause",
+      "pause": 0.45
+    }
+  ]
+}

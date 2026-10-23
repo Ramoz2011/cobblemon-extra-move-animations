@@ -1,0 +1,162 @@
+{
+  "timeline": [
+    {
+      "type": "add_holds",
+      "holds": [
+        "effects"
+      ]
+    },
+    {
+      "type": "molang",
+      "expressions": "v.cn_units = (q.target.width > 0) ? math.clamp((q.user.distance_to_pos(q.target.x, q.target.y, q.target.z) - 0.5 * q.target.width - 0.5 * q.user.width - 0.4) * 16 / math.max(q.user.species.base_scale, 0.1), 0, 7) : 5"
+    },
+    {
+      "type": "parallel",
+      "keyframes": [
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == true && (q.hurt == true || q.missed == true)",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('counter', 'actor', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == true && q.hurt == false && q.missed == false",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('counter', 'actor_fail', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == false && q.hurt(q.entity.uuid) == true",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('counter', 'target', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.cn_units >= 0.5 && v.cn_units < 1.5",
+          "entityCondition": "q.entity.is_user == true && (q.hurt == true || q.missed == true)",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('counter', 'lunge_1', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.cn_units >= 1.5 && v.cn_units < 2.5",
+          "entityCondition": "q.entity.is_user == true && (q.hurt == true || q.missed == true)",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('counter', 'lunge_2', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.cn_units >= 2.5 && v.cn_units < 3.5",
+          "entityCondition": "q.entity.is_user == true && (q.hurt == true || q.missed == true)",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('counter', 'lunge_3', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.cn_units >= 3.5 && v.cn_units < 4.5",
+          "entityCondition": "q.entity.is_user == true && (q.hurt == true || q.missed == true)",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('counter', 'lunge_4', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.cn_units >= 4.5 && v.cn_units < 5.5",
+          "entityCondition": "q.entity.is_user == true && (q.hurt == true || q.missed == true)",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('counter', 'lunge_5', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.cn_units >= 5.5 && v.cn_units < 6.5",
+          "entityCondition": "q.entity.is_user == true && (q.hurt == true || q.missed == true)",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('counter', 'lunge_6', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "v.cn_units >= 6.5",
+          "entityCondition": "q.entity.is_user == true && (q.hurt == true || q.missed == true)",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('counter', 'lunge_7', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.hurt == true",
+          "effect": "cobblemon:counter_wave",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.hurt == false && q.missed == true",
+          "effect": "cobblemon:counter_wave_miss",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.hurt == true",
+          "effect": "cobblemon:counter_wavehead",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "entityCondition": "q.entity.is_user == true && q.hurt == false && q.missed == true",
+          "effect": "cobblemon:counter_wavehead_miss",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "molang",
+          "expressions": "(q.hurt == true || q.missed == true) ? q.user.model_tint(1.0, 0.55, 0.25, 0.72, -1, 0.4, 0.1, 0.28, 0.25) : 0"
+        },
+        {
+          "type": "molang",
+          "expressions": "q.hurt == true ? q.target.model_tint(1.0, 0.62, 0.3, 0.5, 0.7, 0.76, 0.03, 0.05, 0.16) : 0"
+        }
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": "(q.hurt == true || q.missed == true) ? 0.73 : 0.5"
+    },
+    {
+      "type": "remove_holds",
+      "holds": [
+        "effects"
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": 0.5
+    }
+  ]
+}

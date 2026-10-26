@@ -45,7 +45,7 @@
         {
           "type": "entity_sound",
           "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
-          "sound": "cobblemon:move.hydropump.target"
+          "sound": "cobblemon:move.hydropump.splash"
         },
         {
           "type": "entity_molang",
@@ -61,7 +61,7 @@
         {
           "type": "entity_particles",
           "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == false",
-          "effect": "cobblemon:hydropump_targetburst",
+          "effect": "cobblemon:hydropump_impactburst",
           "locators": ["target"]
         },
         {

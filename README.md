@@ -59,10 +59,16 @@ amount of client-side rendering in Java:
 
 The move's normal action-effect timeline calls a MoLang function, and the
 server then tells nearby clients what to draw with a small custom packet.
+
+A little more Java lets players choose between this mod's animation and
+Cobblemon's for each move (see below). Once Cobblemon has loaded its action
+effects, it puts the chosen version of each move in place, and it adds the
+button that opens the choice to Cobblemon's settings screen.
+
 There are still no mixins and no changes to battle logic: damage, accuracy
 and hit counts all stay Cobblemon's. If a future Cobblemon update breaks the
-Java side, only those two extras switch off and the particle animations keep
-playing.
+Java side, only those extras and the choice switch off, and every move keeps
+this mod's particle animation.
 
 ## Requirements
 
@@ -82,6 +88,30 @@ playing.
 **Playing on a server?** Install the mod on the server as well as on every
 player's client. Cobblemon runs move animations on the server, so if the mod
 is only on your client, nothing will show up.
+
+## This mod's animation or Cobblemon's
+
+Each move can play either this mod's animation or Cobblemon's. Cobblemon 1.8
+and later animate Hydro Pump and Draco Meteor themselves; for the other moves,
+"Cobblemon" means its generic move animation. Every move starts on this mod's
+animation.
+
+To switch, open Cobblemon's settings (**Mods → Cobblemon → Configure** with
+[Mod Menu](https://modrinth.com/mod/modmenu), or type `/cobblemonconfig`) and
+click **Extra Move Animations...** next to Done. Click a move to flip it
+between **This mod** and **Cobblemon**; the change applies when you close the
+screen.
+
+On a multiplayer server the server decides for everyone, so the screen only
+shows its choices. Server owners set them in the server's
+`config/cobblemon_extra_move_animation.json` and then run `/reload`:
+
+```json
+{
+  "dracometeor": "this_mod",
+  "hydropump": "cobblemon"
+}
+```
 
 ## Building from source
 

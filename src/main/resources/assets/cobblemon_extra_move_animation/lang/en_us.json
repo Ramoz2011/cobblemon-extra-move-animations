@@ -1,0 +1,10 @@
+{
+  "cobblemon_extra_move_animation.options.button": "Extra Move Animations...",
+  "cobblemon_extra_move_animation.options.title": "Extra Move Animations",
+  "cobblemon_extra_move_animation.options.this_mod": "This mod",
+  "cobblemon_extra_move_animation.options.cobblemon": "Cobblemon",
+  "cobblemon_extra_move_animation.options.this_mod.tooltip": "Plays this mod's animation.",
+  "cobblemon_extra_move_animation.options.cobblemon.tooltip.own": "Plays Cobblemon's own animation for this move.",
+  "cobblemon_extra_move_animation.options.cobblemon.tooltip.generic": "Cobblemon has no animation of its own for this move, so it plays its generic one.",
+  "cobblemon_extra_move_animation.options.server": "Chosen by the server"
+}

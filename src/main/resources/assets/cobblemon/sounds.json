@@ -35,7 +35,7 @@
       }
     ]
   },
-  "move.hydropump.actor": {
+  "move.hydropump.jet": {
     "sounds": [
       {
         "name": "cobblemon:move/watergun/watergun_actor",
@@ -44,7 +44,7 @@
       }
     ]
   },
-  "move.hydropump.target": {
+  "move.hydropump.splash": {
     "sounds": [
       {
         "name": "cobblemon:move/watergun/watergun_target",

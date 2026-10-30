@@ -76,7 +76,7 @@ this mod's particle animation.
 - [Fabric Loader](https://fabricmc.net/) ≥ 0.19.3
 - [Fabric API](https://modrinth.com/mod/fabric-api)
 - [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin)
-- [Cobblemon](https://modrinth.com/mod/cobblemon) ≥ 1.7.3
+- [Cobblemon](https://modrinth.com/mod/cobblemon) 1.7.3 or newer (tested up to 1.8.4)
 
 ## Installation
 

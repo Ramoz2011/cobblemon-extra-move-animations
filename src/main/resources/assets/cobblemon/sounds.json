@@ -580,5 +580,212 @@
         "pitch": 0.85
       }
     ]
+  },
+  "move.bitterblade.ignite": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/willowisp/willowisp_actor_1",
+        "volume": 0.9,
+        "pitch": 0.85
+      }
+    ]
+  },
+  "move.bitterblade.flames": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/lavaplume/lavaplume_actor",
+        "volume": 0.55,
+        "pitch": 1.25
+      }
+    ]
+  },
+  "move.bitterblade.spin": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/aerialace/aerialace_actor_1",
+        "volume": 0.9,
+        "pitch": 0.85
+      }
+    ]
+  },
+  "move.bitterblade.slash": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/aerialace/aerialace_actor_2",
+        "volume": 1.0,
+        "pitch": 0.95
+      }
+    ]
+  },
+  "move.bitterblade.slashfire": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/flamethrower/flamethrower_target",
+        "volume": 0.55,
+        "pitch": 1.3
+      }
+    ]
+  },
+  "move.bitterblade.cut": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/aerialace/aerialace_target",
+        "volume": 1.0,
+        "pitch": 0.85
+      }
+    ]
+  },
+  "move.bitterblade.burst": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/willowisp/willowisp_target",
+        "volume": 0.8,
+        "pitch": 0.95
+      }
+    ]
+  },
+  "move.bitterblade.drain": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/confusion/confusion_actor",
+        "volume": 0.6,
+        "pitch": 1.35
+      }
+    ]
+  },
+  "move.bitterblade.absorb": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/magicalleaf/magicalleaf_target",
+        "volume": 0.7,
+        "pitch": 1.25
+      }
+    ]
+  },
+  "move.bitterblade.heal": {
+    "sounds": [
+      {
+        "name": "cobblemon:item/medicine/medicine_liquid_use",
+        "volume": 0.8,
+        "pitch": 1.1
+      }
+    ]
+  },
+  "move.bitterblade.shimmer": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/protect/protect_actor",
+        "volume": 0.4,
+        "pitch": 1.5
+      }
+    ]
+  },
+  "move.muddywater.gather": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/mudsport/mudsport_actor",
+        "volume": 0.75,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "move.muddywater.surge": {
+    "sounds": [
+      {
+        "name": "cobblemon:fishing/fishing_splash_big_1",
+        "volume": 1.0,
+        "pitch": 0.75
+      }
+    ]
+  },
+  "move.muddywater.rush": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/watergun/watergun_actor",
+        "volume": 0.8,
+        "pitch": 0.6
+      }
+    ]
+  },
+  "move.muddywater.crash": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/mudbomb/mudbomb_target",
+        "volume": 1.0,
+        "pitch": 0.8
+      }
+    ]
+  },
+  "move.muddywater.splash": {
+    "sounds": [
+      {
+        "name": "cobblemon:fishing/fishing_splash_big_2",
+        "volume": 0.9,
+        "pitch": 0.85
+      }
+    ]
+  },
+  "move.muddywater.murk": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/sandattack/sandattack_target",
+        "volume": 0.8,
+        "pitch": 0.75
+      }
+    ]
+  },
+  "move.moonlight.moon": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/psychic/psychic_actor",
+        "volume": 0.5,
+        "pitch": 0.7
+      }
+    ]
+  },
+  "move.moonlight.twinkle": {
+    "sounds": [
+      {
+        "name": "cobblemon:evolution/evolution_notification",
+        "volume": 0.9,
+        "pitch": 1.6
+      }
+    ]
+  },
+  "move.moonlight.beam": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/protect/protect_actor",
+        "volume": 0.55,
+        "pitch": 0.75
+      }
+    ]
+  },
+  "move.moonlight.glow": {
+    "sounds": [
+      {
+        "name": "cobblemon:evolution/evolution_notification",
+        "volume": 0.9,
+        "pitch": 1.2
+      }
+    ]
+  },
+  "move.moonlight.heal": {
+    "sounds": [
+      {
+        "name": "cobblemon:item/medicine/medicine_liquid_use",
+        "volume": 0.8,
+        "pitch": 1.1
+      }
+    ]
+  },
+  "move.moonlight.sparkle": {
+    "sounds": [
+      {
+        "name": "cobblemon:move/impact_generic/impact_generic_fairy_3",
+        "volume": 0.4,
+        "pitch": 1.3
+      }
+    ]
   }
 }

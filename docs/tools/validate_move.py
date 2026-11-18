@@ -85,9 +85,22 @@ VAR_RE = re.compile(r'\b(?:v|variable)\.([a-z_][a-z0-9_]*)', re.I)
 ASSIGN_RE = re.compile(r'\b(?:v|variable)\.([a-z_][a-z0-9_]*)\s*=(?!=)', re.I)
 
 
+def animation_vars(move):
+    """Variables the move's own animation sets on its emitters (pre_effect_script), e.g. Brave Bird's v.du."""
+    path = os.path.join(RES, f'assets/cobblemon/bedrock/generic/animations/moves/{move}.animation.json')
+    out = set()
+    if os.path.exists(path):
+        for a in json.load(open(path))['animations'].values():
+            for eff in a.get('particle_effects', {}).values():
+                for e in (eff if isinstance(eff, list) else [eff]):
+                    out |= set(m.lower() for m in ASSIGN_RE.findall(e.get('pre_effect_script', '')))
+    return out
+
+
 def check_particles(move):
     ids = {}
     exprs = []
+    from_anim = animation_vars(move)
     pdir = os.path.join(RES, f'assets/cobblemon/bedrock/particles/moves/{move}')
     files = sorted(glob.glob(os.path.join(pdir, '*.particle.json')))
     if not files:
@@ -130,7 +143,7 @@ def check_particles(move):
         # variables
         ex = strings(pe)
         exprs += ex
-        declared = set(BUILTIN_VARS) | {'du', 'miss'}   # du/miss come from the dash animation's pre_effect_script
+        declared = set(BUILTIN_VARS) | from_anim   # e.g. Brave Bird's du/miss, Moonlight's lum/dens
         for k in pe.get('curves', {}):
             declared.add(k.split('.', 1)[1])
         for s in ex:

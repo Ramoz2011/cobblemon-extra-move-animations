@@ -1,0 +1,150 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "cobblemon:bitterblade_ringflames",
+      "basic_render_parameters": {
+        "material": "particles_blend",
+        "texture": "textures/particles/generic/fire/wisp"
+      }
+    },
+    "curves": {
+      "variable.bb_yaw": {
+        "type": "linear",
+        "input": "((0.72 + 0.3 * v.particle_random_2)) - 0.72",
+        "horizontal_range": 0.3,
+        "nodes": [
+          -28.0,
+          -27.79,
+          -27.19,
+          -26.19,
+          -24.81,
+          -23.06,
+          -20.95,
+          -18.49,
+          -15.7,
+          -12.58,
+          -9.15,
+          -5.41,
+          -1.38,
+          2.93,
+          7.51,
+          12.35,
+          17.44,
+          22.77,
+          28.32,
+          34.09,
+          40.06,
+          46.22,
+          52.57,
+          59.09,
+          65.77,
+          72.59,
+          79.56,
+          86.65,
+          93.86,
+          101.17,
+          108.58,
+          116.07,
+          123.63,
+          131.25,
+          138.92,
+          146.63,
+          154.37,
+          162.12,
+          169.88,
+          177.63,
+          185.37,
+          193.08,
+          200.75,
+          208.37,
+          215.93,
+          223.42,
+          230.83,
+          238.14,
+          245.35,
+          252.44,
+          259.41,
+          266.23,
+          272.91,
+          279.43,
+          285.78,
+          291.94,
+          297.91,
+          303.68,
+          309.23,
+          314.56,
+          319.65,
+          324.49,
+          329.07,
+          333.38,
+          337.41,
+          341.15,
+          344.58,
+          347.7,
+          350.49,
+          352.95,
+          355.06,
+          356.81,
+          358.19,
+          359.19,
+          359.79,
+          360.0
+        ]
+      }
+    },
+    "components": {
+      "minecraft:emitter_initialization": {
+        "creation_expression": "v.entity_width = 1; v.entity_height = 1;"
+      },
+      "minecraft:emitter_rate_instant": {
+        "num_particles": 36
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 0.1
+      },
+      "minecraft:emitter_shape_point": {},
+      "minecraft:particle_initialization": {
+        "per_update_expression": "v.bl = math.clamp(math.max(v.entity_width, v.entity_height), 0.5, 3.0);v.fs = math.clamp(0.45 + 0.5 * v.bl, 0.7, 1.9);v.rw = 0.42 * v.entity_width + 0.22;v.sc = ((q.entity_scale > 0 ? q.entity_scale : 1) / 16);v.bs = math.clamp(q.entity_scale / 0.7, 0.4, 2.5);v.tt = v.particle_age + 0.195;v.sd = v.particle_random_1 < 0.5;v.rin = 0.5 * v.entity_width + 0.12;v.rad = v.rin + (0.4 + 0.6 * v.particle_random_3) * 0.9 * v.fs;v.ox = (v.sd ? -1 : 1) * math.cos(v.bb_yaw);v.oz = (v.sd ? -1 : 1) * math.sin(v.bb_yaw);v.px = v.rad * v.ox;v.py = 0.55 * math.min(v.entity_height, 3.2);v.pz = v.rad * v.oz;v.wx = -v.oz;v.wz = v.ox;"
+      },
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": 1.225
+      },
+      "minecraft:particle_initial_speed": 0,
+      "minecraft:particle_motion_parametric": {
+        "relative_position": [
+          "v.px + (0.9 * v.wx + 0.7 * v.ox) * v.fs * (1.4 * (v.tt - (0.72 + 0.3 * v.particle_random_2)) - 2 * (v.tt - (0.72 + 0.3 * v.particle_random_2)) * (v.tt - (0.72 + 0.3 * v.particle_random_2)))",
+          "v.py + 0.5 * v.fs * (v.tt - (0.72 + 0.3 * v.particle_random_2))",
+          "v.pz + (0.9 * v.wz + 0.7 * v.oz) * v.fs * (1.4 * (v.tt - (0.72 + 0.3 * v.particle_random_2)) - 2 * (v.tt - (0.72 + 0.3 * v.particle_random_2)) * (v.tt - (0.72 + 0.3 * v.particle_random_2)))"
+        ]
+      },
+      "minecraft:particle_appearance_billboard": {
+        "size": [
+          "(0.16 + 0.08 * v.particle_random_4) * v.fs * (1 - 0.35 * math.clamp((v.tt - (0.72 + 0.3 * v.particle_random_2)) / (0.26 + 0.1 * v.particle_random_4), 0, 1)) * math.clamp(((v.tt - (0.72 + 0.3 * v.particle_random_2))) / 0.03, 0, 1) * math.clamp(((0.26 + 0.1 * v.particle_random_4) - ((v.tt - (0.72 + 0.3 * v.particle_random_2)))) * 40, 0, 1)",
+          "(0.16 + 0.08 * v.particle_random_4) * v.fs * (1 - 0.35 * math.clamp((v.tt - (0.72 + 0.3 * v.particle_random_2)) / (0.26 + 0.1 * v.particle_random_4), 0, 1)) * math.clamp(((v.tt - (0.72 + 0.3 * v.particle_random_2))) / 0.03, 0, 1) * math.clamp(((0.26 + 0.1 * v.particle_random_4) - ((v.tt - (0.72 + 0.3 * v.particle_random_2)))) * 40, 0, 1) * 1.44"
+        ],
+        "facing_camera_mode": "rotate_xyz",
+        "uv": {
+          "texture_width": 99,
+          "texture_height": 13,
+          "uv": [
+            "9 * (math.floor(math.mod(math.max((v.tt - (0.72 + 0.3 * v.particle_random_2)), 0) * 16 + 11 * v.particle_random_4, 11)))",
+            0
+          ],
+          "uv_size": [
+            9,
+            13
+          ]
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": [
+          1,
+          "v.particle_random_2 < 0.25 ? 0.65 : 1",
+          1,
+          "0.95 * (1 - math.clamp((v.tt - (0.72 + 0.3 * v.particle_random_2)) / (0.26 + 0.1 * v.particle_random_4), 0, 1) * math.clamp((v.tt - (0.72 + 0.3 * v.particle_random_2)) / (0.26 + 0.1 * v.particle_random_4), 0, 1))"
+        ]
+      }
+    }
+  }
+}

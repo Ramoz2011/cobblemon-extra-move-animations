@@ -1,0 +1,68 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "cobblemon:muddywater_churn",
+      "basic_render_parameters": {
+        "material": "particles_blend",
+        "texture": "textures/particles/generic/fire/cloudyfire_white"
+      }
+    },
+    "components": {
+      "minecraft:emitter_initialization": {
+        "creation_expression": "v.entity_width = 1; v.entity_height = 1;"
+      },
+      "minecraft:emitter_rate_instant": {
+        "num_particles": 18
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 0.1
+      },
+      "minecraft:emitter_shape_point": {},
+      "minecraft:particle_initialization": {
+        "per_update_expression": "v.bl = math.clamp(math.max(v.entity_width, v.entity_height), 0.5, 3.0);v.fx = math.clamp(0.55 + 0.4 * v.bl, 0.7, 1.8);v.rw = 0.5 * v.entity_width + 0.15;v.k = (v.particle_age / v.particle_lifetime);v.an = 360 * v.particle_random_1 + 300 * v.particle_age;v.rd = v.rw + 0.15 + 0.25 * v.particle_random_2 + 0.3 * v.k;"
+      },
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": "0.55 + 0.2 * v.particle_random_4"
+      },
+      "minecraft:particle_initial_speed": 0,
+      "minecraft:particle_motion_parametric": {
+        "relative_position": [
+          "v.rd * math.cos(v.an)",
+          "0.08 + 0.4 * v.entity_height * v.particle_random_3 * (1 - v.k)",
+          "v.rd * math.sin(v.an)"
+        ]
+      },
+      "minecraft:particle_initial_spin": {
+        "rotation": "math.floor(v.particle_random_4 * 4) * 90"
+      },
+      "minecraft:particle_appearance_billboard": {
+        "size": [
+          "math.min((0.28 + 0.14 * v.particle_random_4) * v.fx, 0.55) * (0.7 + 0.4 * math.sin(180 * math.min(v.k * 1.4, 1)))",
+          "math.min((0.28 + 0.14 * v.particle_random_4) * v.fx, 0.55) * (0.7 + 0.4 * math.sin(180 * math.min(v.k * 1.4, 1)))"
+        ],
+        "facing_camera_mode": "rotate_xyz",
+        "uv": {
+          "texture_width": 160,
+          "texture_height": 16,
+          "uv": [
+            "16 * (3 + math.floor(math.clamp(v.k, 0, 0.999) * 7))",
+            0
+          ],
+          "uv_size": [
+            16,
+            16
+          ]
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": [
+          "0.643 + -0.224 * math.clamp((v.k - 0) / 0.5, 0, 1) + -0.176 * math.clamp((v.k - 0.5) / 0.5, 0, 1)",
+          "0.486 + -0.196 * math.clamp((v.k - 0) / 0.5, 0, 1) + -0.129 * math.clamp((v.k - 0.5) / 0.5, 0, 1)",
+          "0.29 + -0.133 * math.clamp((v.k - 0) / 0.5, 0, 1) + -0.078 * math.clamp((v.k - 0.5) / 0.5, 0, 1)",
+          "0.75 * (1 - v.k * v.k)"
+        ]
+      }
+    }
+  }
+}

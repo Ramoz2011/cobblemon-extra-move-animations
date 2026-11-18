@@ -1,0 +1,65 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "cobblemon:moonlight_motes",
+      "basic_render_parameters": {
+        "material": "particles_blend",
+        "texture": "textures/particles/generic/sparkle/glowingsparkle"
+      }
+    },
+    "components": {
+      "minecraft:emitter_initialization": {
+        "creation_expression": "v.entity_width = 1; v.entity_height = 1;"
+      },
+      "minecraft:emitter_rate_instant": {
+        "num_particles": 42
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 0.1
+      },
+      "minecraft:emitter_shape_point": {},
+      "minecraft:particle_initialization": {
+        "per_update_expression": "v.bw = math.clamp(v.entity_width, 0.3, 3.0);v.bh = math.clamp(v.entity_height, 0.3, 4.2);v.bl = math.clamp(math.max(v.bw, v.bh), 0.5, 3.0);v.fs = math.clamp(0.45 + 0.5 * v.bl, 0.7, 1.9);v.lu = v.lum > 0 ? v.lum : 1;v.dn = v.dens > 0 ? v.dens : 0.8;v.mr = math.clamp(0.5 + 0.24 * v.bl, 0.62, 1.2);v.my = 1.1 * v.bh + 0.6 + v.mr + 0.12 * v.bl;v.mz = 0.15 + 0.1 * v.bl;v.cr = math.clamp(0.72 * v.bw + 0.4, 0.75, 2.0);v.ct = v.my - 0.25 * v.mr;v.or = 0.5 * v.bw + 0.3;v.rr = math.max(0.55 * v.bl, 0.4) + 0.08;v.cy = 0.5 * v.bh;v.sc = ((q.entity_scale > 0 ? q.entity_scale : 1) / 16);v.tt = v.particle_age + 0.195;"
+      },
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": 2.675
+      },
+      "minecraft:particle_initial_speed": 0,
+      "minecraft:particle_motion_parametric": {
+        "relative_position": [
+          "(v.cr * 0.82 * math.sqrt(v.particle_random_3)) * math.cos((360 * v.particle_random_2)) + 0.06 * math.sin((v.tt - (1.05 + 0.8999999999999999 * v.particle_random_1)) * 400 + 360 * v.particle_random_4)",
+          "(v.ct - 0.3 - (1.0 + 0.6 * v.particle_random_4) * math.max((v.tt - (1.05 + 0.8999999999999999 * v.particle_random_1)), 0))",
+          "(v.cr * 0.82 * math.sqrt(v.particle_random_3)) * math.sin((360 * v.particle_random_2))"
+        ]
+      },
+      "minecraft:particle_appearance_billboard": {
+        "size": [
+          "(0.06 + 0.03 * v.particle_random_4) * v.fs * (0.6 + 0.4 * math.sin(v.tt * 820 + 360 * v.particle_random_3)) * math.clamp(((v.tt - (1.05 + 0.8999999999999999 * v.particle_random_1))) / 0.03, 0, 1) * math.clamp((0.9 - ((v.tt - (1.05 + 0.8999999999999999 * v.particle_random_1)))) * 40, 0, 1) * math.clamp(((v.ct - 0.3 - (1.0 + 0.6 * v.particle_random_4) * math.max((v.tt - (1.05 + 0.8999999999999999 * v.particle_random_1)), 0)) - 0.08) * 8, 0, 1) * (math.mod(v.particle_random_1 * 17.31 + v.particle_random_3 * 5.77, 1) < v.dn ? 1 : 0)",
+          "(0.06 + 0.03 * v.particle_random_4) * v.fs * (0.6 + 0.4 * math.sin(v.tt * 820 + 360 * v.particle_random_3)) * math.clamp(((v.tt - (1.05 + 0.8999999999999999 * v.particle_random_1))) / 0.03, 0, 1) * math.clamp((0.9 - ((v.tt - (1.05 + 0.8999999999999999 * v.particle_random_1)))) * 40, 0, 1) * math.clamp(((v.ct - 0.3 - (1.0 + 0.6 * v.particle_random_4) * math.max((v.tt - (1.05 + 0.8999999999999999 * v.particle_random_1)), 0)) - 0.08) * 8, 0, 1) * (math.mod(v.particle_random_1 * 17.31 + v.particle_random_3 * 5.77, 1) < v.dn ? 1 : 0)"
+        ],
+        "facing_camera_mode": "rotate_xyz",
+        "uv": {
+          "texture_width": 8,
+          "texture_height": 32,
+          "uv": [
+            0,
+            "8 * (1 + math.floor(v.particle_random_3 * 2))"
+          ],
+          "uv_size": [
+            8,
+            8
+          ]
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": [
+          0.86,
+          0.95,
+          1.0,
+          "1 - math.clamp((v.tt - (1.05 + 0.8999999999999999 * v.particle_random_1)) / 0.9, 0, 1) * math.clamp((v.tt - (1.05 + 0.8999999999999999 * v.particle_random_1)) / 0.9, 0, 1) * math.clamp((v.tt - (1.05 + 0.8999999999999999 * v.particle_random_1)) / 0.9, 0, 1)"
+        ]
+      }
+    }
+  }
+}

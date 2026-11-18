@@ -1,7 +1,7 @@
 # Cobblemon: Extra Move Animations
 
 A [Fabric](https://fabricmc.net/) mod that adds custom battle animations, particle
-effects, and sound design to [Cobblemon](https://cobblemon.com/) for seventeen moves
+effects, and sound design to [Cobblemon](https://cobblemon.com/) for twenty moves
 the base mod doesn't animate yet.
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -29,6 +29,9 @@ the base mod doesn't animate yet.
 | **Flare Blitz** | Fire | Flame streams pour into the user until it flares white-hot, then it charges as a fireball wrapped in spiralling rings of fire and explodes on the target in flame and black smoke. |
 | **Beat Up** | Dark | Dark afterimages of the user and its real teammates, drawn with their own models, strike one after another: one per hit, so fainted or statused teammates sit it out. |
 | **Counter** | Fighting | The user braces to absorb the blow, its body flushes red-orange, and it strikes back with a white-hot burst of orange sparks. |
+| **Bitter Blade** | Fire | Blue ghost flames engulf the user as its blades glow hot pink, it spins into a slash that cuts the target in white light, and a mint-green orb of drained energy flies back to heal it. |
+| **Muddy Water** | Water | A crown of muddy water rises around the user and rolls out as a wave that crashes over every foe; a murky haze clings to a foe only when its accuracy really falls. |
+| **Moonlight** | Fairy | A full moon rises above the user and pours a column of moonlight onto it, shining brighter in harsh sunlight and softer in bad weather, before a mint heal burst restores its HP. |
 
 ## How it works
 
@@ -49,16 +52,27 @@ mod is defined declaratively:
   sprite sheets the official atlas doesn't cover; the generators for these
   live in `docs/tools/`.
 
-Two moves need something the JSON system can't do, so they add a small
+Some moves need something the JSON system can't do, so they add a small
 amount of client-side rendering in Java:
 
 - **Beat Up** draws the user's real teammates, with their own Cobblemon
   models, as dark afterimages, and darkens the target's model on each hit.
 - **Counter** tints the user's model red-orange as it turns the blow around,
-  and flashes the target's model orange on impact.
+  and flashes the target's model orange on impact. **Bitter Blade** tints the
+  user mint as the drained energy reaches it, and **Moonlight** bathes it in
+  white-blue light.
+- **Muddy Water** draws its wave as a 3D sheet of water that rises around
+  the user and rolls out over every foe.
 
 The move's normal action-effect timeline calls a MoLang function, and the
 server then tells nearby clients what to draw with a small custom packet.
+
+Two moves also read what the battle has already decided, so the animation
+can follow it. Muddy Water's murky haze only shows on a foe whose accuracy
+really fell, and in a double battle a foe it misses hops aside. Moonlight
+shines brighter in harsh sunlight and softer in rain, sand, hail or snow,
+matching how much HP it restores. They only read the battle and never
+change it.
 
 A little more Java lets players choose between this mod's animation and
 Cobblemon's for each move (see below). Once Cobblemon has loaded its action

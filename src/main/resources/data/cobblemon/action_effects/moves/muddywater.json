@@ -1,0 +1,102 @@
+{
+  "timeline": [
+    {
+      "type": "add_holds",
+      "holds": [
+        "effects"
+      ]
+    },
+    {
+      "type": "parallel",
+      "keyframes": [
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == true",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('muddywater', 'actor', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == false",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('muddywater', 'splash', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == false && q.hurt(q.entity.uuid) == true",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('muddywater', 'target', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == false && q.missed(q.entity.uuid) == true",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('muddywater', 'dodge', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == false && q.entity.move_stat_change('accuracy') < 0",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('muddywater', 'murk', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:muddywater_crestspray",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "root"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:muddywater_crestfoam",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "root"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:muddywater_crestclods",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "root"
+          ]
+        },
+        {
+          "type": "molang",
+          "expressions": "q.user.wave_effect('muddywater', q.target, q.targets)"
+        },
+        {
+          "type": "molang",
+          "expressions": "q.user.play_on_missed_spread_targets('muddywater', 'splash', 'dodge')"
+        }
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": 1.0
+    },
+    {
+      "type": "remove_holds",
+      "holds": [
+        "effects"
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": 0.9
+    }
+  ]
+}

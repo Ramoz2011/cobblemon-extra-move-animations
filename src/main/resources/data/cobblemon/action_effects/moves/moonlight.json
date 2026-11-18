@@ -1,0 +1,65 @@
+{
+  "timeline": [
+    {
+      "type": "add_holds",
+      "holds": [
+        "effects"
+      ]
+    },
+    {
+      "type": "parallel",
+      "keyframes": [
+        {
+          "type": "entity_molang",
+          "condition": "!(q.user.move_heal_share < 0) && !(q.user.move_heal_share > 0.58) && !(q.user.move_heal_share > 0 && q.user.move_heal_share < 0.38)",
+          "entityCondition": "q.entity.is_user == true",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('moonlight', 'actor', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.user.move_heal_share > 0.58",
+          "entityCondition": "q.entity.is_user == true",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('moonlight', 'actor_bright', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.user.move_heal_share > 0 && q.user.move_heal_share < 0.38",
+          "entityCondition": "q.entity.is_user == true",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('moonlight', 'actor_soft', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.user.move_heal_share < 0",
+          "entityCondition": "q.entity.is_user == true",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('moonlight', 'actor_fail', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "molang",
+          "expressions": "(q.user.move_heal_share < 0) ? 0 : ((q.user.move_heal_share > 0.58) ? q.user.model_tint(0.72, 0.85, 1.0, 0.55, 0.5, 1.35, 0.3, 0.53, 0.4) : ((q.user.move_heal_share > 0 && q.user.move_heal_share < 0.38) ? q.user.model_tint(0.72, 0.85, 1.0, 0.28, 0.25, 1.35, 0.3, 0.53, 0.4) : q.user.model_tint(0.72, 0.85, 1.0, 0.42, 0.38, 1.35, 0.3, 0.53, 0.4)))"
+        }
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": "(q.user.move_heal_share < 0) ? 0.44 : 2.01"
+    },
+    {
+      "type": "remove_holds",
+      "holds": [
+        "effects"
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": "(q.user.move_heal_share < 0) ? 0.46 : 0.8"
+    }
+  ]
+}

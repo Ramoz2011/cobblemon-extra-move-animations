@@ -3,6 +3,7 @@ package _1dknone.cobblemon_extra_move_animation.client;
 import _1dknone.cobblemon_extra_move_animation.client.beatup.BeatUpClient;
 import _1dknone.cobblemon_extra_move_animation.client.tint.ModelTintClient;
 import _1dknone.cobblemon_extra_move_animation.client.toggle.MoveTogglesClient;
+import _1dknone.cobblemon_extra_move_animation.client.wave.WaveClient;
 import net.fabricmc.api.ClientModInitializer;
 
 public class Cobblemon_extra_move_animationClient implements ClientModInitializer {
@@ -12,5 +13,6 @@ public class Cobblemon_extra_move_animationClient implements ClientModInitialize
         BeatUpClient.register();
         ModelTintClient.register();
         MoveTogglesClient.register();
+        WaveClient.register();
     }
 }

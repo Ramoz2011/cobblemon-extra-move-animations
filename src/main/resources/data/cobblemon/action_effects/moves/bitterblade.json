@@ -1,0 +1,182 @@
+{
+  "timeline": [
+    {
+      "type": "add_holds",
+      "holds": [
+        "effects"
+      ]
+    },
+    {
+      "type": "parallel",
+      "keyframes": [
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == true && q.entity.species.identifier == 'cobblemon:ceruledge'",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('bitterblade', 'actor_ceruledge', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == true && !(q.entity.species.identifier == 'cobblemon:ceruledge')",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('bitterblade', 'actor', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "condition": "q.hurt == true",
+          "entityCondition": "q.entity.is_user == true",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('bitterblade', 'heal', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_molang",
+          "entityCondition": "q.entity.is_user == false && q.hurt(q.entity.uuid) == true",
+          "expressions": [
+            "q.play_animation(q.bedrock_stateful('bitterblade', 'target', 'endures_primary_animations'))"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "effect": "cobblemon:bitterblade_releaseflash",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "condition": "!(q.missed == true)",
+          "effect": "cobblemon:bitterblade_wave",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "condition": "q.missed == true",
+          "effect": "cobblemon:bitterblade_wave_miss",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "condition": "!(q.missed == true)",
+          "effect": "cobblemon:bitterblade_wavetrail",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "condition": "q.missed == true",
+          "effect": "cobblemon:bitterblade_wavetrail_miss",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "condition": "!(q.missed == true)",
+          "effect": "cobblemon:bitterblade_waveflames",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "condition": "q.missed == true",
+          "effect": "cobblemon:bitterblade_waveflames_miss",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "condition": "q.hurt == true",
+          "effect": "cobblemon:bitterblade_orbsparks",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "condition": "q.hurt == true",
+          "effect": "cobblemon:bitterblade_orbhalo",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "condition": "q.hurt == true",
+          "effect": "cobblemon:bitterblade_orbcore",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "entity_particles",
+          "condition": "q.hurt == true",
+          "effect": "cobblemon:bitterblade_orbtrail",
+          "locators": [
+            "root"
+          ],
+          "targetLocators": [
+            "target"
+          ]
+        },
+        {
+          "type": "molang",
+          "expressions": "q.hurt == true ? q.user.model_tint(0.42, 1.0, 0.62, 0.55, 0.45, 1.85, 0.06, 0.3, 0.3) : 0"
+        }
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": 1.07
+    },
+    {
+      "type": "remove_holds",
+      "holds": [
+        "effects"
+      ]
+    },
+    {
+      "type": "pause",
+      "pause": "q.hurt == true ? 0.98 : 0.45"
+    }
+  ]
+}

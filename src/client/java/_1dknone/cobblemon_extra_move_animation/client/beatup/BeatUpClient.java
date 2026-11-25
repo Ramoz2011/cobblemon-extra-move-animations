@@ -6,8 +6,8 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,18 +37,18 @@ public final class BeatUpClient {
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> SEQUENCES.clear());
     }
 
-    private static void start(MinecraftClient client, BeatUpPayload payload) {
-        if (disabled || client.world == null || payload.teammates().isEmpty()) {
+    private static void start(Minecraft client, BeatUpPayload payload) {
+        if (disabled || client.level == null || payload.teammates().isEmpty()) {
             return;
         }
         try {
-            SEQUENCES.add(new BeatUpSequence(client.world, payload));
+            SEQUENCES.add(new BeatUpSequence(client.level, payload));
         } catch (Throwable t) {
             fail(t);
         }
     }
 
-    private static void tick(MinecraftClient client) {
+    private static void tick(Minecraft client) {
         if (SEQUENCES.isEmpty() || client.isPaused()) {
             return;
         }
@@ -61,14 +61,14 @@ public final class BeatUpClient {
     }
 
     private static void render(WorldRenderContext context) {
-        VertexConsumerProvider consumers = context.consumers();
+        MultiBufferSource consumers = context.consumers();
         if (SEQUENCES.isEmpty() || consumers == null) {
             return;
         }
         try {
-            float tickDelta = context.tickCounter().getTickDelta(false);
+            float tickDelta = context.tickCounter().getGameTimeDeltaPartialTick(false);
             for (BeatUpSequence sequence : SEQUENCES) {
-                sequence.render(context.matrixStack(), consumers, context.camera().getPos(), tickDelta);
+                sequence.render(context.matrixStack(), consumers, context.camera().getPosition(), tickDelta);
             }
         } catch (Throwable t) {
             fail(t);

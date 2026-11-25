@@ -14,10 +14,10 @@ import com.cobblemon.mod.common.battles.pokemon.BattlePokemon;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.Entity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,11 +62,11 @@ public final class WaveEffect {
     private static Object run(PokemonEntity user, MoParams params) {
         // Never let an exception escape: a throwing keyframe would cut the rest of the move's timeline short
         try {
-            if (!(user.getWorld() instanceof ServerWorld world) || params.getParams().isEmpty()) {
+            if (!(user.level() instanceof ServerLevel world) || params.getParams().isEmpty()) {
                 return DoubleValue.ZERO;
             }
             String name = params.getString(0).trim();
-            Identifier style = name.contains(":") ? Identifier.tryParse(name) : Identifier.tryParse("cobblemon_extra_move_animation", name);
+            ResourceLocation style = name.contains(":") ? ResourceLocation.tryParse(name) : ResourceLocation.tryBuild("cobblemon_extra_move_animation", name);
             if (style == null) {
                 return DoubleValue.ZERO;
             }
@@ -90,8 +90,8 @@ public final class WaveEffect {
                 ids = ids.subList(0, WavePayload.MAX_TARGETS);
             }
             WavePayload payload = new WavePayload(style, user.getId(), List.copyOf(ids));
-            for (ServerPlayerEntity player : world.getPlayers()) {
-                if (player.squaredDistanceTo(user) <= RANGE * RANGE && ServerPlayNetworking.canSend(player, WavePayload.ID)) {
+            for (ServerPlayer player : world.players()) {
+                if (player.distanceToSqr(user) <= RANGE * RANGE && ServerPlayNetworking.canSend(player, WavePayload.ID)) {
                     ServerPlayNetworking.send(player, payload);
                 }
             }

@@ -10,16 +10,16 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourceReloader;
-import net.minecraft.resource.ResourceType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.PlayerManager;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.util.Unit;
-import net.minecraft.util.profiler.Profiler;
+import net.minecraft.util.profiling.ProfilerFiller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +64,7 @@ public final class MoveToggles {
     /** The data the running reload reads; every reload listener gets it before any of them applies. */
     private static volatile ResourceManager resources;
     private static volatile MinecraftServer server;
-    private static volatile Map<Identifier, Choice> choices = Map.of();
+    private static volatile Map<ResourceLocation, Choice> choices = Map.of();
     private static volatile List<String> cobblemonMoves = List.of();
     private static List<EffectFile> effectFiles;
     private static boolean warned;
@@ -78,7 +78,7 @@ public final class MoveToggles {
         ServerLifecycleEvents.SERVER_STOPPED.register(stopped -> server = null);
         ServerPlayConnectionEvents.JOIN.register((handler, sender, joined) -> send(handler.player));
         try {
-            ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new ResourceCapture());
+            ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new ResourceCapture());
             ActionEffects.INSTANCE.getObservable().subscribe(Priority.NORMAL, MoveToggles::onReload);
         } catch (Throwable t) {
             LOGGER.warn("Couldn't hook into Cobblemon's action effects; every move plays this mod's animation", t);
@@ -110,9 +110,9 @@ public final class MoveToggles {
         // Never let an exception escape: it would abort the rest of Cobblemon's data reload
         try {
             MoveConfig.load(moves());
-            Map<Identifier, ActionEffectTimeline> map = effects.getActionEffects();
+            Map<ResourceLocation, ActionEffectTimeline> map = effects.getActionEffects();
             ResourceManager manager = resources;
-            Map<Identifier, Choice> found = new LinkedHashMap<>();
+            Map<ResourceLocation, Choice> found = new LinkedHashMap<>();
             for (EffectFile file : effectFiles()) {
                 try {
                     Choice choice = choose(file, map.get(file.key()), manager);
@@ -158,9 +158,9 @@ public final class MoveToggles {
         return new Choice(file.move(), thisMod, loaded);
     }
 
-    private static void apply(Map<Identifier, ActionEffectTimeline> map) {
+    private static void apply(Map<ResourceLocation, ActionEffectTimeline> map) {
         List<String> cobblemon = new ArrayList<>();
-        for (Map.Entry<Identifier, Choice> entry : choices.entrySet()) {
+        for (Map.Entry<ResourceLocation, Choice> entry : choices.entrySet()) {
             Choice choice = entry.getValue();
             boolean thisMod = MoveConfig.usesThisMod(choice.move());
             ActionEffectTimeline timeline = thisMod ? choice.thisMod() : choice.cobblemon();
@@ -179,13 +179,13 @@ public final class MoveToggles {
                     cobblemon.stream().map(move -> move + (cobblemonAnimates(move) ? " (its own)" : " (its generic one)")).toList()));
         }
         MinecraftServer running = server;
-        PlayerManager players = running == null ? null : running.getPlayerManager();
+        PlayerList players = running == null ? null : running.getPlayerList();
         if (players != null) {
-            players.getPlayerList().forEach(MoveToggles::send);
+            players.getPlayers().forEach(MoveToggles::send);
         }
     }
 
-    private static void send(ServerPlayerEntity player) {
+    private static void send(ServerPlayer player) {
         if (ServerPlayNetworking.canSend(player, MoveChoicesPayload.ID)) {
             ServerPlayNetworking.send(player, new MoveChoicesPayload(cobblemonMoves));
         }
@@ -204,7 +204,7 @@ public final class MoveToggles {
                         // Cobblemon keys an action effect by its file name alone
                         String name = path.getFileName().toString().replaceFirst("\\.json$", "");
                         String move = name.startsWith(CHARGE_PREFIX) ? name.substring(CHARGE_PREFIX.length()) : name;
-                        files.add(new EffectFile(relative.toString(), Identifier.of("cobblemon", name), move));
+                        files.add(new EffectFile(relative.toString(), ResourceLocation.fromNamespaceAndPath("cobblemon", name), move));
                     });
                 } catch (IOException e) {
                     LOGGER.warn("Couldn't list this mod's action effects", e);
@@ -223,8 +223,8 @@ public final class MoveToggles {
 
     private static List<byte[]> copies(ResourceManager manager, EffectFile file) throws IOException {
         List<byte[]> copies = new ArrayList<>();
-        for (Resource resource : manager.getAllResources(Identifier.of("cobblemon", file.path()))) {
-            try (InputStream in = resource.getInputStream()) {
+        for (Resource resource : manager.getResourceStack(ResourceLocation.fromNamespaceAndPath("cobblemon", file.path()))) {
+            try (InputStream in = resource.open()) {
                 copies.add(in.readAllBytes());
             }
         }
@@ -247,7 +247,7 @@ public final class MoveToggles {
      * @param key  the action effect's id in Cobblemon's map
      * @param move the move it belongs to
      */
-    private record EffectFile(String path, Identifier key, String move) {
+    private record EffectFile(String path, ResourceLocation key, String move) {
     }
 
     /** One effect's two versions; {@code cobblemon} is null when Cobblemon plays its generic animation. */
@@ -256,18 +256,18 @@ public final class MoveToggles {
 
     /** Hands this class the data a reload reads, before Cobblemon's action effects are applied from it. */
     private static final class ResourceCapture implements IdentifiableResourceReloadListener {
-        private static final Identifier ID = Identifier.of(MOD_ID, "move_toggles");
+        private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(MOD_ID, "move_toggles");
 
         @Override
-        public Identifier getFabricId() {
+        public ResourceLocation getFabricId() {
             return ID;
         }
 
         @Override
-        public CompletableFuture<Void> reload(ResourceReloader.Synchronizer synchronizer, ResourceManager manager, Profiler prepareProfiler,
-                                              Profiler applyProfiler, Executor prepareExecutor, Executor applyExecutor) {
+        public CompletableFuture<Void> reload(PreparableReloadListener.PreparationBarrier synchronizer, ResourceManager manager, ProfilerFiller prepareProfiler,
+                                              ProfilerFiller applyProfiler, Executor prepareExecutor, Executor applyExecutor) {
             resources = manager;
-            return synchronizer.whenPrepared(Unit.INSTANCE).thenRun(() -> {
+            return synchronizer.wait(Unit.INSTANCE).thenRun(() -> {
             });
         }
     }

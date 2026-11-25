@@ -1,11 +1,11 @@
 package _1dknone.cobblemon_extra_move_animation.client.beatup;
 
 import _1dknone.cobblemon_extra_move_animation.client.render.ModelOverlay;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.Vec3d;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * The target darkening for an instant on every hit, as Black/White 2 shows Beat Up: its own model, in
@@ -20,14 +20,14 @@ final class TargetFlash {
 
     private final ModelOverlay overlay = new ModelOverlay();
 
-    void render(MatrixStack matrices, VertexConsumerProvider consumers, Vec3d camera, Entity entity, float tickDelta,
+    void render(PoseStack matrices, MultiBufferSource consumers, Vec3 camera, Entity entity, float tickDelta,
                 float strength) {
         if (broken || strength <= 0) {
             return;
         }
         try {
             int color = ModelOverlay.argb(SHADE[0] * Math.min(strength, 1F), SHADE[1], SHADE[2], SHADE[3]);
-            overlay.render(matrices, consumers, camera, entity, tickDelta, color, OverlayTexture.DEFAULT_UV);
+            overlay.render(matrices, consumers, camera, entity, tickDelta, color, OverlayTexture.NO_OVERLAY);
         } catch (RuntimeException | LinkageError e) {
             broken = true;
             BeatUpClient.LOGGER.warn("Couldn't draw Beat Up's hit flash; it's off for this session", e);

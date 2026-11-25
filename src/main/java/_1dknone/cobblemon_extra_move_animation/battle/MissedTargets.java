@@ -8,8 +8,6 @@ import com.cobblemon.mod.common.battles.interpreter.instructions.MoveInstruction
 import com.cobblemon.mod.common.battles.pokemon.BattlePokemon;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.net.messages.client.effect.RunPosableMoLangPacket;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +16,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 
 /**
  * Lets a spread move's action effect animate the foes it missed, which Cobblemon leaves out of it.
@@ -53,7 +53,7 @@ public final class MissedTargets {
     private static Object run(PokemonEntity user, MoParams params) {
         // Never let an exception escape: a throwing keyframe would cut the rest of the move's timeline short
         try {
-            if (!(user.getWorld() instanceof ServerWorld world) || params.getParams().size() < 2) {
+            if (!(user.level() instanceof ServerLevel world) || params.getParams().size() < 2) {
                 return DoubleValue.ZERO;
             }
             String group = params.getString(0).trim();
@@ -75,9 +75,9 @@ public final class MissedTargets {
                 if (entity == null || entity == user || CurrentMove.isListedTarget(move, missed, battle)) {
                     continue;
                 }
-                List<ServerPlayerEntity> players = new ArrayList<>();
-                for (ServerPlayerEntity player : world.getPlayers()) {
-                    if (player.squaredDistanceTo(entity) <= RANGE * RANGE) {
+                List<ServerPlayer> players = new ArrayList<>();
+                for (ServerPlayer player : world.players()) {
+                    if (player.distanceToSqr(entity) <= RANGE * RANGE) {
                         players.add(player);
                     }
                 }

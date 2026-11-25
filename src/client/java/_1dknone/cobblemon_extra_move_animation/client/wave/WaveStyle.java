@@ -2,8 +2,8 @@ package _1dknone.cobblemon_extra_move_animation.client.wave;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 /**
  * The numbers behind one wave: when each part happens, how big it gets, its colours. Read from
@@ -15,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
  */
 final class WaveStyle {
     /** Greyscale, tileable: the vertex colours below tint it. */
-    final Identifier texture;
+    final ResourceLocation texture;
     /** World size of one repeat of the texture. */
     final float textureBlocks;
     /** Texture repeats per second the water flows along the wave (over the crest and down its face). */
@@ -100,12 +100,12 @@ final class WaveStyle {
     /** A size that follows the user's height: {@code scale * height + add}, kept within min..max. */
     record Size(float scale, float add, float min, float max) {
         float of(float height) {
-            return MathHelper.clamp(scale * height + add, min, max);
+            return Mth.clamp(scale * height + add, min, max);
         }
     }
 
     private WaveStyle(JsonObject json) {
-        texture = Identifier.of(string(json, "texture", "cobblemon_extra_move_animation:textures/effect/muddy_water.png"));
+        texture = ResourceLocation.parse(string(json, "texture", "cobblemon_extra_move_animation:textures/effect/muddy_water.png"));
         textureBlocks = Math.max(0.1F, number(json, "texture_blocks", 2F));
         flowSpeed = number(json, "flow_speed", 0.9F);
         lightingUpBias = Math.max(0F, number(json, "lighting_up_bias", 0.6F));
@@ -137,8 +137,8 @@ final class WaveStyle {
         overshoot = number(wave, "overshoot", 0.9F);
         crestNoise = number(wave, "crest_noise", 0.08F);
         endTaper = Math.max(1F, number(wave, "end_taper", 6F));
-        foamBack = MathHelper.clamp(number(wave, "foam_back", 0.6F), 0F, 0.99F);
-        foamFace = MathHelper.clamp(number(wave, "foam_face", 0.45F), 0.01F, 1F);
+        foamBack = Mth.clamp(number(wave, "foam_back", 0.6F), 0F, 0.99F);
+        foamFace = Mth.clamp(number(wave, "foam_face", 0.45F), 0.01F, 1F);
         mottle = Math.max(0F, number(wave, "mottle", 0.35F));
 
         JsonObject color = object(json, "color");

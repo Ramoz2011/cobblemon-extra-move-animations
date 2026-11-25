@@ -14,9 +14,9 @@ import com.cobblemon.mod.common.battles.pokemon.BattlePokemon;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.Entity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +57,7 @@ public final class BeatUpAfterimages {
     private static Object run(PokemonEntity user, MoParams params) {
         // Never let an exception escape: a throwing keyframe would cut the rest of the move's timeline short
         try {
-            if (!(user.getWorld() instanceof ServerWorld world)) {
+            if (!(user.level() instanceof ServerLevel world)) {
                 return DoubleValue.ZERO;
             }
             List<MoValue> args = params.getParams();
@@ -68,8 +68,8 @@ public final class BeatUpAfterimages {
 
             BeatUpPayload payload = new BeatUpPayload(user.getId(), target == null ? -1 : target.getId(), Math.max(hits, 0),
                     firstStrike, interval, strikers(user, hits));
-            for (ServerPlayerEntity player : world.getPlayers()) {
-                if (player.squaredDistanceTo(user) <= RANGE * RANGE && ServerPlayNetworking.canSend(player, BeatUpPayload.ID)) {
+            for (ServerPlayer player : world.players()) {
+                if (player.distanceToSqr(user) <= RANGE * RANGE && ServerPlayNetworking.canSend(player, BeatUpPayload.ID)) {
                     ServerPlayNetworking.send(player, payload);
                 }
             }

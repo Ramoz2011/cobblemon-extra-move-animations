@@ -1,23 +1,22 @@
 package _1dknone.cobblemon_extra_move_animation.client.wave;
 
 import _1dknone.cobblemon_extra_move_animation.wave.WavePayload;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.RaycastContext;
-
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import java.util.List;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 
 /**
  * One wave, from the moment its packet arrived. Time runs on client ticks plus the frame's partial tick,
@@ -49,19 +48,19 @@ final class WaveSequence {
     /** Lifts the water off the ground so it doesn't flicker against it. */
     private static final double LIFT = 0.03;
 
-    private final ClientWorld world;
+    private final ClientLevel world;
     private final WaveStyle style;
     private final int userId;
     private final List<Integer> targetIds;
     private int ticks;
 
     // where everyone stands; kept when an entity unloads mid-move so the wave doesn't snap away
-    private Vec3d user;
+    private Vec3 user;
     private double userGround;
     private float userWidth = 0.8F;
     private float userHeight = 1F;
-    private Vec3d facing = new Vec3d(0, 0, 1);
-    private final Vec3d[] targets;
+    private Vec3 facing = new Vec3(0, 0, 1);
+    private final Vec3[] targets;
     private final double[] targetGrounds;
     private final float[] targetWidths;
 
@@ -84,26 +83,26 @@ final class WaveSequence {
     private final double[] arc = new double[ROWS];        // length along the surface (texture)
     private final float[] colour = new float[3];
 
-    WaveSequence(ClientWorld world, WaveStyle style, WavePayload payload) {
+    WaveSequence(ClientLevel world, WaveStyle style, WavePayload payload) {
         this.world = world;
         this.style = style;
         this.userId = payload.userId();
         this.targetIds = payload.targetIds();
-        this.targets = new Vec3d[targetIds.size()];
+        this.targets = new Vec3[targetIds.size()];
         this.targetGrounds = new double[targetIds.size()];
         this.targetWidths = new float[targetIds.size()];
     }
 
     /** Runs once per client tick; false once the water has drained (or the player changed world). */
-    boolean tick(MinecraftClient client) {
-        if (client.world != world) {
+    boolean tick(Minecraft client) {
+        if (client.level != world) {
             return false;
         }
         ticks++;
         return ticks / 20F <= style.drainEnd + 0.1F;
     }
 
-    void render(MatrixStack matrices, VertexConsumerProvider consumers, Vec3d camera, float tickDelta) {
+    void render(PoseStack matrices, MultiBufferSource consumers, Vec3 camera, float tickDelta) {
         if (!stage(tickDelta)) {
             return;
         }
@@ -116,10 +115,10 @@ final class WaveSequence {
         }
         double midX = originX + forwardX * distance * 0.5;
         double midZ = originZ + forwardZ * distance * 0.5;
-        int light = WorldRenderer.getLightmapCoordinates(world,
-                BlockPos.ofFloored(midX, Math.max(userGround, targetGround) + 1, midZ));
-        VertexConsumer buffer = consumers.getBuffer(RenderLayer.getEntityTranslucent(style.texture));
-        MatrixStack.Entry entry = matrices.peek();
+        int light = LevelRenderer.getLightColor(world,
+                BlockPos.containing(midX, Math.max(userGround, targetGround) + 1, midZ));
+        VertexConsumer buffer = consumers.getBuffer(RenderType.entityTranslucent(style.texture));
+        PoseStack.Pose entry = matrices.last();
         double bias = style.lightingUpBias;
         if (anyPool) {
             pool.draw(buffer, entry, camera, light, 0, 1, 0, false, bias);
@@ -134,17 +133,17 @@ final class WaveSequence {
 
     // ================================================================= where everyone stands
     private boolean stage(float tickDelta) {
-        Entity userEntity = world.getEntityById(userId);
+        Entity userEntity = world.getEntity(userId);
         if (userEntity != null) {
-            Vec3d pos = userEntity.getLerpedPos(tickDelta);
-            if (user == null || pos.squaredDistanceTo(user) > 0.04) {
-                userGround = ground(pos, userEntity.getHeight());
+            Vec3 pos = userEntity.getPosition(tickDelta);
+            if (user == null || pos.distanceToSqr(user) > 0.04) {
+                userGround = ground(pos, userEntity.getBbHeight());
             }
             user = pos;
-            userWidth = userEntity.getWidth();
-            userHeight = userEntity.getHeight();
-            float yaw = userEntity instanceof LivingEntity living ? living.getBodyYaw() : userEntity.getYaw();
-            facing = Vec3d.fromPolar(0, yaw);
+            userWidth = userEntity.getBbWidth();
+            userHeight = userEntity.getBbHeight();
+            float yaw = userEntity instanceof LivingEntity living ? living.getVisualRotationYInDegrees() : userEntity.getYRot();
+            facing = Vec3.directionFromRotation(0, yaw);
         }
         if (user == null) {
             return false;
@@ -152,14 +151,14 @@ final class WaveSequence {
         double sumX = 0, sumZ = 0, sumGround = 0;
         int known = 0;
         for (int i = 0; i < targets.length; i++) {
-            Entity target = world.getEntityById(targetIds.get(i));
+            Entity target = world.getEntity(targetIds.get(i));
             if (target != null) {
-                Vec3d pos = target.getLerpedPos(tickDelta);
-                if (targets[i] == null || pos.squaredDistanceTo(targets[i]) > 0.04) {
-                    targetGrounds[i] = ground(pos, target.getHeight());
+                Vec3 pos = target.getPosition(tickDelta);
+                if (targets[i] == null || pos.distanceToSqr(targets[i]) > 0.04) {
+                    targetGrounds[i] = ground(pos, target.getBbHeight());
                 }
                 targets[i] = pos;
-                targetWidths[i] = target.getWidth();
+                targetWidths[i] = target.getBbWidth();
             }
             if (targets[i] != null) {
                 sumX += targets[i].x;
@@ -183,7 +182,7 @@ final class WaveSequence {
         }
         distance = Math.sqrt(dx * dx + dz * dz);
         if (distance < 1.0E-3) {
-            Vec3d flat = new Vec3d(facing.x, 0, facing.z).normalize();
+            Vec3 flat = new Vec3(facing.x, 0, facing.z).normalize();
             dx = flat.x;
             dz = flat.z;
             distance = 1;
@@ -205,12 +204,12 @@ final class WaveSequence {
     }
 
     /** The ground (or water surface) under a Pokemon, which may be hovering. */
-    private double ground(Vec3d pos, float height) {
-        Vec3d from = pos.add(0, Math.min(0.5, height * 0.5), 0);
-        Vec3d to = pos.add(0, -MAX_DROP, 0);
-        BlockHitResult hit = world.raycast(new RaycastContext(from, to, RaycastContext.ShapeType.COLLIDER,
-                RaycastContext.FluidHandling.ANY, ShapeContext.absent()));
-        return hit.getType() == HitResult.Type.MISS ? pos.y : hit.getPos().y;
+    private double ground(Vec3 pos, float height) {
+        Vec3 from = pos.add(0, Math.min(0.5, height * 0.5), 0);
+        Vec3 to = pos.add(0, -MAX_DROP, 0);
+        BlockHitResult hit = world.clip(new ClipContext(from, to, ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.ANY, CollisionContext.empty()));
+        return hit.getType() == HitResult.Type.MISS ? pos.y : hit.getLocation().y;
     }
 
     /** Ground height at a distance along the line from the user to the targets. */

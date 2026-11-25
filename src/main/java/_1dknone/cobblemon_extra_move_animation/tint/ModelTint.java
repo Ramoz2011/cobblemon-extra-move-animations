@@ -6,9 +6,9 @@ import com.bedrockk.molang.runtime.value.DoubleValue;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,15 +46,15 @@ public final class ModelTint {
     private static Object run(PokemonEntity entity, MoParams params) {
         // Never let an exception escape: a throwing keyframe would cut the rest of the move's timeline short
         try {
-            if (!(entity.getWorld() instanceof ServerWorld world) || params.getParams().size() < 9) {
+            if (!(entity.level() instanceof ServerLevel world) || params.getParams().size() < 9) {
                 return DoubleValue.ZERO;
             }
             int color = channel(params, 3) << 24 | channel(params, 0) << 16 | channel(params, 1) << 8 | channel(params, 2);
             ModelTintPayload payload = new ModelTintPayload(entity.getId(), color,
-                    MathHelper.clamp((float) params.getDouble(4), -1F, 1F), seconds(params, 5),
+                    Mth.clamp((float) params.getDouble(4), -1F, 1F), seconds(params, 5),
                     seconds(params, 6), seconds(params, 7), seconds(params, 8));
-            for (ServerPlayerEntity player : world.getPlayers()) {
-                if (player.squaredDistanceTo(entity) <= RANGE * RANGE && ServerPlayNetworking.canSend(player, ModelTintPayload.ID)) {
+            for (ServerPlayer player : world.players()) {
+                if (player.distanceToSqr(entity) <= RANGE * RANGE && ServerPlayNetworking.canSend(player, ModelTintPayload.ID)) {
                     ServerPlayNetworking.send(player, payload);
                 }
             }
@@ -69,7 +69,7 @@ public final class ModelTint {
     }
 
     private static float unit(MoParams params, int index) {
-        return MathHelper.clamp((float) params.getDouble(index), 0F, 1F);
+        return Mth.clamp((float) params.getDouble(index), 0F, 1F);
     }
 
     private static int channel(MoParams params, int index) {
@@ -77,6 +77,6 @@ public final class ModelTint {
     }
 
     private static float seconds(MoParams params, int index) {
-        return MathHelper.clamp((float) params.getDouble(index), 0F, MAX_SECONDS);
+        return Mth.clamp((float) params.getDouble(index), 0F, MAX_SECONDS);
     }
 }

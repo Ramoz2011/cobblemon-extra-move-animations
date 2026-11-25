@@ -1,15 +1,14 @@
 package _1dknone.cobblemon_extra_move_animation.client.beatup;
 
 import _1dknone.cobblemon_extra_move_animation.beatup.BeatUpPayload;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.Vec3d;
-
+import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * One use of Beat Up: an afterimage per strike, timed from the moment the move started. Time runs on
@@ -17,7 +16,7 @@ import java.util.List;
  * so the strikes stay on the frames where the target flinches.
  */
 final class BeatUpSequence {
-    private final ClientWorld world;
+    private final ClientLevel world;
     private final int userId;
     private final int targetId;
     private final List<Afterimage> afterimages = new ArrayList<>();
@@ -30,14 +29,14 @@ final class BeatUpSequence {
     private int ticks;
     private float lastFrame = -1;
     // the last known positions, so an entity that unloads mid-move doesn't snap its afterimages away
-    private Vec3d user;
-    private Vec3d target;
+    private Vec3 user;
+    private Vec3 target;
     private Entity targetEntity;
-    private Vec3d facing = new Vec3d(0, 0, 1);
+    private Vec3 facing = new Vec3(0, 0, 1);
     private float userRadius = 0.4F;
     private float targetRadius = 0.4F;
 
-    BeatUpSequence(ClientWorld world, BeatUpPayload payload) {
+    BeatUpSequence(ClientLevel world, BeatUpPayload payload) {
         this.world = world;
         this.userId = payload.userId();
         this.targetId = payload.targetId();
@@ -54,8 +53,8 @@ final class BeatUpSequence {
     }
 
     /** Runs once per client tick; returns false when the sequence is over. */
-    boolean tick(MinecraftClient client) {
-        if (client.world != world) {
+    boolean tick(Minecraft client) {
+        if (client.level != world) {
             return false;
         }
         ticks++;
@@ -63,7 +62,7 @@ final class BeatUpSequence {
         if (seconds > end) {
             return false;
         }
-        Stage stage = stage(1F, client.gameRenderer.getCamera().getPos());
+        Stage stage = stage(1F, client.gameRenderer.getMainCamera().getPosition());
         if (stage != null) {
             for (Afterimage afterimage : afterimages) {
                 afterimage.tick(client, world, stage, seconds);
@@ -72,7 +71,7 @@ final class BeatUpSequence {
         return true;
     }
 
-    void render(MatrixStack matrices, VertexConsumerProvider consumers, Vec3d camera, float tickDelta) {
+    void render(PoseStack matrices, MultiBufferSource consumers, Vec3 camera, float tickDelta) {
         float now = ticks + tickDelta;
         // FloatingState advances by the time since the last frame it was given
         float frameTicks = lastFrame < 0 ? 0 : Math.max(0, now - lastFrame);
@@ -102,26 +101,26 @@ final class BeatUpSequence {
         return strength;
     }
 
-    private Stage stage(float tickDelta, Vec3d camera) {
-        Entity userEntity = world.getEntityById(userId);
+    private Stage stage(float tickDelta, Vec3 camera) {
+        Entity userEntity = world.getEntity(userId);
         if (userEntity != null) {
-            user = userEntity.getLerpedPos(tickDelta);
-            userRadius = userEntity.getWidth() / 2;
-            facing = Vec3d.fromPolar(0, userEntity.getBodyYaw());
+            user = userEntity.getPosition(tickDelta);
+            userRadius = userEntity.getBbWidth() / 2;
+            facing = Vec3.directionFromRotation(0, userEntity.getVisualRotationYInDegrees());
         }
-        targetEntity = targetId >= 0 ? world.getEntityById(targetId) : null;
+        targetEntity = targetId >= 0 ? world.getEntity(targetId) : null;
         if (targetEntity != null) {
-            target = targetEntity.getLerpedPos(tickDelta);
-            targetRadius = targetEntity.getWidth() / 2;
+            target = targetEntity.getPosition(tickDelta);
+            targetRadius = targetEntity.getBbWidth() / 2;
         }
         if (user == null) {
             return null;
         }
-        Vec3d targetPos = target != null ? target : user.add(facing.multiply(3));
-        Vec3d flat = new Vec3d(targetPos.x - user.x, 0, targetPos.z - user.z);
+        Vec3 targetPos = target != null ? target : user.add(facing.scale(3));
+        Vec3 flat = new Vec3(targetPos.x - user.x, 0, targetPos.z - user.z);
         double distance = flat.length();
-        Vec3d forward = distance > 1.0E-3 ? flat.multiply(1 / distance) : new Vec3d(facing.x, 0, facing.z).normalize();
-        return new Stage(user, targetPos, forward, new Vec3d(-forward.z, 0, forward.x), distance, userRadius, targetRadius,
+        Vec3 forward = distance > 1.0E-3 ? flat.scale(1 / distance) : new Vec3(facing.x, 0, facing.z).normalize();
+        return new Stage(user, targetPos, forward, new Vec3(-forward.z, 0, forward.x), distance, userRadius, targetRadius,
                 camera);
     }
 
@@ -130,7 +129,7 @@ final class BeatUpSequence {
      * towards the target and the one square to it, both Pokemon's horizontal radii, and where this
      * client's camera is.
      */
-    record Stage(Vec3d user, Vec3d target, Vec3d forward, Vec3d side, double distance, float userRadius, float targetRadius,
-                 Vec3d camera) {
+    record Stage(Vec3 user, Vec3 target, Vec3 forward, Vec3 side, double distance, float userRadius, float targetRadius,
+                 Vec3 camera) {
     }
 }

@@ -10,12 +10,12 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourceType;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,8 +39,8 @@ public final class WaveClient {
     private static final String FOLDER = "wave_effects";
 
     private static final List<WaveSequence> SEQUENCES = new ArrayList<>();
-    private static final Map<Identifier, WaveStyle> STYLES = new HashMap<>();
-    private static final Set<Identifier> MISSING = new HashSet<>();
+    private static final Map<ResourceLocation, WaveStyle> STYLES = new HashMap<>();
+    private static final Set<ResourceLocation> MISSING = new HashSet<>();
     private static boolean disabled;
 
     private WaveClient() {
@@ -51,14 +51,14 @@ public final class WaveClient {
         ClientTickEvents.END_CLIENT_TICK.register(WaveClient::tick);
         WorldRenderEvents.AFTER_ENTITIES.register(WaveClient::render);
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> SEQUENCES.clear());
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
+        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
             @Override
-            public Identifier getFabricId() {
-                return Identifier.of("cobblemon_extra_move_animation", FOLDER);
+            public ResourceLocation getFabricId() {
+                return ResourceLocation.fromNamespaceAndPath("cobblemon_extra_move_animation", FOLDER);
             }
 
             @Override
-            public void reload(ResourceManager manager) {
+            public void onResourceManagerReload(ResourceManager manager) {
                 loadStyles(manager);
             }
         });
@@ -68,11 +68,11 @@ public final class WaveClient {
     private static void loadStyles(ResourceManager manager) {
         STYLES.clear();
         MISSING.clear();
-        for (Map.Entry<Identifier, Resource> entry : manager.findResources(FOLDER, id -> id.getPath().endsWith(".json")).entrySet()) {
-            Identifier file = entry.getKey();
+        for (Map.Entry<ResourceLocation, Resource> entry : manager.listResources(FOLDER, id -> id.getPath().endsWith(".json")).entrySet()) {
+            ResourceLocation file = entry.getKey();
             String path = file.getPath();
-            Identifier id = Identifier.of(file.getNamespace(), path.substring(FOLDER.length() + 1, path.length() - ".json".length()));
-            try (Reader reader = entry.getValue().getReader()) {
+            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(file.getNamespace(), path.substring(FOLDER.length() + 1, path.length() - ".json".length()));
+            try (Reader reader = entry.getValue().openAsReader()) {
                 JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
                 STYLES.put(id, WaveStyle.parse(json));
             } catch (Exception e) {
@@ -81,8 +81,8 @@ public final class WaveClient {
         }
     }
 
-    private static void start(MinecraftClient client, WavePayload payload) {
-        if (disabled || client.world == null) {
+    private static void start(Minecraft client, WavePayload payload) {
+        if (disabled || client.level == null) {
             return;
         }
         WaveStyle style = STYLES.get(payload.style());
@@ -93,13 +93,13 @@ public final class WaveClient {
             return;
         }
         try {
-            SEQUENCES.add(new WaveSequence(client.world, style, payload));
+            SEQUENCES.add(new WaveSequence(client.level, style, payload));
         } catch (Throwable t) {
             fail(t);
         }
     }
 
-    private static void tick(MinecraftClient client) {
+    private static void tick(Minecraft client) {
         if (SEQUENCES.isEmpty() || client.isPaused()) {
             return;
         }
@@ -111,14 +111,14 @@ public final class WaveClient {
     }
 
     private static void render(WorldRenderContext context) {
-        VertexConsumerProvider consumers = context.consumers();
+        MultiBufferSource consumers = context.consumers();
         if (SEQUENCES.isEmpty() || consumers == null) {
             return;
         }
         try {
-            float tickDelta = context.tickCounter().getTickDelta(false);
+            float tickDelta = context.tickCounter().getGameTimeDeltaPartialTick(false);
             for (WaveSequence sequence : SEQUENCES) {
-                sequence.render(context.matrixStack(), consumers, context.camera().getPos(), tickDelta);
+                sequence.render(context.matrixStack(), consumers, context.camera().getPosition(), tickDelta);
             }
         } catch (Throwable t) {
             fail(t);

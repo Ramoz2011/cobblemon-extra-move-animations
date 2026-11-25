@@ -5,12 +5,12 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +27,7 @@ import java.util.List;
 public final class MoveTogglesClient {
     private static final Logger LOGGER = LoggerFactory.getLogger("cobblemon_extra_move_animation");
     private static final String COBBLEMON_SETTINGS = "com.cobblemon.mod.common.client.gui.config.CobblemonConfigScreen";
-    private static final Text BUTTON = Text.translatable("cobblemon_extra_move_animation.options.button");
+    private static final Component BUTTON = Component.translatable("cobblemon_extra_move_animation.options.button");
 
     private static volatile List<String> serverCobblemonMoves = List.of();
     private static boolean warned;
@@ -51,19 +51,19 @@ public final class MoveTogglesClient {
     }
 
     /** Puts our button beside Done in the screen's footer, the way vanilla pairs two footer buttons. */
-    private static void addButton(MinecraftClient client, Screen screen, int width) {
+    private static void addButton(Minecraft client, Screen screen, int width) {
         try {
-            List<ClickableWidget> buttons = Screens.getButtons(screen);
-            ClickableWidget done = buttons.stream()
-                    .filter(button -> button instanceof ButtonWidget && ScreenTexts.DONE.equals(button.getMessage()))
+            List<AbstractWidget> buttons = Screens.getButtons(screen);
+            AbstractWidget done = buttons.stream()
+                    .filter(button -> button instanceof Button && CommonComponents.GUI_DONE.equals(button.getMessage()))
                     .findFirst().orElse(null);
             if (done == null) {
                 return;
             }
             done.setWidth(150);
             done.setX(width / 2 + 4);
-            buttons.add(ButtonWidget.builder(BUTTON, button -> client.setScreen(new MoveAnimationsScreen(screen)))
-                    .dimensions(width / 2 - 154, done.getY(), 150, done.getHeight())
+            buttons.add(Button.builder(BUTTON, button -> client.setScreen(new MoveAnimationsScreen(screen)))
+                    .bounds(width / 2 - 154, done.getY(), 150, done.getHeight())
                     .build());
         } catch (Throwable t) {
             if (!warned) {

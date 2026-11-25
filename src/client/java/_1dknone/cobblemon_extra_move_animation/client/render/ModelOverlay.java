@@ -6,16 +6,16 @@ import com.cobblemon.mod.common.client.render.models.blockbench.repository.Rende
 import com.cobblemon.mod.common.client.render.models.blockbench.repository.VaryingModelRepository;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RotationAxis;
-import net.minecraft.util.math.Vec3d;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * Draws a Pokemon's own model again, in its current pose, a hair larger than the real one and in a
@@ -36,16 +36,16 @@ public final class ModelOverlay {
      *                white by u/15*75% before the colour is applied
      * @return false if the entity isn't a rendered Pokemon
      */
-    public boolean render(MatrixStack matrices, VertexConsumerProvider consumers, Vec3d camera, Entity entity,
+    public boolean render(PoseStack matrices, MultiBufferSource consumers, Vec3 camera, Entity entity,
                           float tickDelta, int color, int overlay) {
         if (!(entity instanceof PokemonEntity pokemonEntity) || !(pokemonEntity.getDelegate() instanceof PokemonClientDelegate state)) {
             return false;
         }
         Pokemon pokemon = pokemonEntity.getPokemon();
-        Identifier species = pokemon.getSpecies().getResourceIdentifier();
+        ResourceLocation species = pokemon.getSpecies().getResourceIdentifier();
         VaryingModelRepository repository = VaryingModelRepository.INSTANCE;
         PosableModel model = repository.getPoser(species, state);
-        Identifier texture = repository.getTexture(species, state);
+        ResourceLocation texture = repository.getTexture(species, state);
         context.put(RenderContext.Companion.getRENDER_STATE(), RenderContext.RenderState.WORLD);
         context.put(RenderContext.Companion.getENTITY(), pokemonEntity);
         context.put(RenderContext.Companion.getSPECIES(), species);
@@ -56,27 +56,27 @@ public final class ModelOverlay {
         model.setContext(context);
 
         // the same pose LivingEntityRenderer gave it this frame (applying it again changes nothing)
-        float bodyYaw = MathHelper.lerpAngleDegrees(tickDelta, pokemonEntity.prevBodyYaw, pokemonEntity.bodyYaw);
-        float headYaw = MathHelper.lerpAngleDegrees(tickDelta, pokemonEntity.prevHeadYaw, pokemonEntity.headYaw) - bodyYaw;
-        model.applyAnimations(pokemonEntity, state, pokemonEntity.limbAnimator.getPos(tickDelta),
-                pokemonEntity.limbAnimator.getSpeed(tickDelta), pokemonEntity.age + tickDelta, headYaw, pokemonEntity.getPitch(tickDelta));
+        float bodyYaw = Mth.rotLerp(tickDelta, pokemonEntity.yBodyRotO, pokemonEntity.yBodyRot);
+        float headYaw = Mth.rotLerp(tickDelta, pokemonEntity.yHeadRotO, pokemonEntity.yHeadRot) - bodyYaw;
+        model.applyAnimations(pokemonEntity, state, pokemonEntity.walkAnimation.position(tickDelta),
+                pokemonEntity.walkAnimation.speed(tickDelta), pokemonEntity.tickCount + tickDelta, headYaw, pokemonEntity.getViewXRot(tickDelta));
         model.resetLayerContext();
 
         // The renderer's own scale factors moved between Cobblemon versions, but the entity's height is
         // always its form's hitbox times that scale
         EntityDimensions hitbox = pokemon.getForm().getHitbox();
         float scale = (hitbox.fixed() || hitbox.height() <= 0 ? pokemon.getForm().getBaseScale()
-                : pokemonEntity.getHeight() / hitbox.height()) * INFLATE;
-        Vec3d pos = pokemonEntity.getLerpedPos(tickDelta);
-        matrices.push();
+                : pokemonEntity.getBbHeight() / hitbox.height()) * INFLATE;
+        Vec3 pos = pokemonEntity.getPosition(tickDelta);
+        matrices.pushPose();
         matrices.translate(pos.x - camera.x, pos.y - camera.y, pos.z - camera.z);
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180F - bodyYaw));
+        matrices.mulPose(Axis.YP.rotationDegrees(180F - bodyYaw));
         matrices.scale(-1F, -1F, 1F);
         matrices.scale(scale, scale, scale);
         matrices.translate(0F, -1.501F + 1.5F, 0F);
-        model.render(context, matrices, consumers.getBuffer(RenderLayer.getEntityTranslucent(texture)),
-                LightmapTextureManager.MAX_LIGHT_COORDINATE, overlay, color);
-        matrices.pop();
+        model.render(context, matrices, consumers.getBuffer(RenderType.entityTranslucent(texture)),
+                LightTexture.FULL_BRIGHT, overlay, color);
+        matrices.popPose();
         model.setDefault();
         return true;
     }
@@ -87,6 +87,6 @@ public final class ModelOverlay {
     }
 
     private static int channel(float value) {
-        return (int) (MathHelper.clamp(value, 0F, 1F) * 255);
+        return (int) (Mth.clamp(value, 0F, 1F) * 255);
     }
 }

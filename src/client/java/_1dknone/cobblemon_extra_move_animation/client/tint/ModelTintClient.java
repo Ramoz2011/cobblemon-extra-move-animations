@@ -7,13 +7,13 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,37 +48,37 @@ public final class ModelTintClient {
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> TINTS.clear());
     }
 
-    private static void start(MinecraftClient client, ModelTintPayload payload) {
-        if (!disabled && client.world != null) {
-            TINTS.add(new Tint(client.world, payload));
+    private static void start(Minecraft client, ModelTintPayload payload) {
+        if (!disabled && client.level != null) {
+            TINTS.add(new Tint(client.level, payload));
         }
     }
 
-    private static void tick(MinecraftClient client) {
+    private static void tick(Minecraft client) {
         if (TINTS.isEmpty() || client.isPaused()) {
             return;
         }
-        TINTS.removeIf(tint -> client.world != tint.world || ++tint.ticks / 20F > tint.payload.end());
+        TINTS.removeIf(tint -> client.level != tint.world || ++tint.ticks / 20F > tint.payload.end());
     }
 
     private static void render(WorldRenderContext context) {
-        VertexConsumerProvider consumers = context.consumers();
+        MultiBufferSource consumers = context.consumers();
         if (TINTS.isEmpty() || consumers == null) {
             return;
         }
         try {
-            float tickDelta = context.tickCounter().getTickDelta(false);
-            Vec3d camera = context.camera().getPos();
+            float tickDelta = context.tickCounter().getGameTimeDeltaPartialTick(false);
+            Vec3 camera = context.camera().getPosition();
             for (Tint tint : TINTS) {
                 float strength = tint.strength((tint.ticks + tickDelta) / 20F);
-                Entity entity = tint.world.getEntityById(tint.payload.entityId());
+                Entity entity = tint.world.getEntity(tint.payload.entityId());
                 if (strength <= 0 || entity == null || entity.isInvisible()) {
                     continue;
                 }
                 int color = tint.payload.color();
                 float alpha = (color >>> 24) / 255F * strength;
                 float flash = tint.payload.flash();
-                int overlay = flash < 0 ? OverlayTexture.packUv(0, RED_ROW) : OverlayTexture.packUv(Math.round(flash * 15), WHITE_ROW);
+                int overlay = flash < 0 ? OverlayTexture.pack(0, RED_ROW) : OverlayTexture.pack(Math.round(flash * 15), WHITE_ROW);
                 OVERLAY.render(context.matrixStack(), consumers, camera, entity, tickDelta,
                         (int) (alpha * 255) << 24 | color & 0xFFFFFF, overlay);
             }
@@ -90,11 +90,11 @@ public final class ModelTintClient {
     }
 
     private static final class Tint {
-        final ClientWorld world;
+        final ClientLevel world;
         final ModelTintPayload payload;
         int ticks;
 
-        Tint(ClientWorld world, ModelTintPayload payload) {
+        Tint(ClientLevel world, ModelTintPayload payload) {
             this.world = world;
             this.payload = payload;
         }
@@ -117,7 +117,7 @@ public final class ModelTintClient {
         }
 
         private static float smooth(float x) {
-            x = MathHelper.clamp(x, 0F, 1F);
+            x = Mth.clamp(x, 0F, 1F);
             return x * x * (3 - 2 * x);
         }
     }

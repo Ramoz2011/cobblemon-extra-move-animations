@@ -1,9 +1,9 @@
 package _1dknone.cobblemon_extra_move_animation.tint;
 
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * Sent to nearby clients to tint a Pokemon's model for a moment: the colour fades in, holds and fades
@@ -20,12 +20,12 @@ import net.minecraft.util.Identifier;
  * @param fall     seconds to fade out
  */
 public record ModelTintPayload(int entityId, int color, float flash, float delay, float rise, float hold,
-                               float fall) implements CustomPayload {
+                               float fall) implements CustomPacketPayload {
 
-    public static final Id<ModelTintPayload> ID = new Id<>(Identifier.of("cobblemon_extra_move_animation", "model_tint"));
+    public static final Type<ModelTintPayload> ID = new Type<>(ResourceLocation.fromNamespaceAndPath("cobblemon_extra_move_animation", "model_tint"));
 
     // seven fields, one more than PacketCodec.tuple takes
-    public static final PacketCodec<RegistryByteBuf, ModelTintPayload> CODEC = PacketCodec.of(
+    public static final StreamCodec<RegistryFriendlyByteBuf, ModelTintPayload> CODEC = StreamCodec.ofMember(
             (payload, buf) -> {
                 buf.writeVarInt(payload.entityId);
                 buf.writeInt(payload.color);
@@ -40,7 +40,7 @@ public record ModelTintPayload(int entityId, int color, float flash, float delay
     );
 
     @Override
-    public Id<ModelTintPayload> getId() {
+    public Type<ModelTintPayload> type() {
         return ID;
     }
 

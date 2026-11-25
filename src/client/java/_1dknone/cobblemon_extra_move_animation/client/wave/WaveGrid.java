@@ -1,9 +1,9 @@
 package _1dknone.cobblemon_extra_move_animation.client.wave;
 
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Vec3d;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 
 /**
@@ -65,10 +65,10 @@ final class WaveGrid {
      * {@code upBias} tips every normal towards the sky, which softens Minecraft's entity shading: steep
      * water would otherwise come out half as bright as flat water.
      */
-    void draw(VertexConsumer buffer, MatrixStack.Entry entry, Vec3d camera, int light,
+    void draw(VertexConsumer buffer, PoseStack.Pose entry, Vec3 camera, int light,
               double hintX, double hintY, double hintZ, boolean radial, double upBias) {
         normals(hintX, hintY, hintZ, radial, upBias);
-        Matrix4f pose = entry.getPositionMatrix();
+        Matrix4f pose = entry.pose();
         for (int row = 0; row < rows - 1; row++) {
             for (int col = 0; col < cols - 1; col++) {
                 int i00 = row * cols + col;
@@ -86,13 +86,13 @@ final class WaveGrid {
         }
     }
 
-    private void vertex(VertexConsumer buffer, Matrix4f pose, MatrixStack.Entry entry, Vec3d camera, int light, int i) {
-        buffer.vertex(pose, (float) (x[i] - camera.x), (float) (y[i] - camera.y), (float) (z[i] - camera.z))
-                .color(r[i], g[i], b[i], a[i])
-                .texture(u[i], v[i])
-                .overlay(OverlayTexture.DEFAULT_UV)
-                .light(light)
-                .normal(entry, nx[i], ny[i], nz[i]);
+    private void vertex(VertexConsumer buffer, Matrix4f pose, PoseStack.Pose entry, Vec3 camera, int light, int i) {
+        buffer.addVertex(pose, (float) (x[i] - camera.x), (float) (y[i] - camera.y), (float) (z[i] - camera.z))
+                .setColor(r[i], g[i], b[i], a[i])
+                .setUv(u[i], v[i])
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(light)
+                .setNormal(entry, nx[i], ny[i], nz[i]);
     }
 
     private void normals(double hintX, double hintY, double hintZ, boolean radial, double upBias) {

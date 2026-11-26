@@ -2,6 +2,7 @@ package _1dknone.cobblemon_extra_move_animation.wave;
 
 import _1dknone.cobblemon_extra_move_animation.battle.CurrentMove;
 import _1dknone.cobblemon_extra_move_animation.molang.PokemonEntityFunctions;
+import _1dknone.cobblemon_extra_move_animation.platform.Platform;
 import com.bedrockk.molang.runtime.MoParams;
 import com.bedrockk.molang.runtime.struct.VariableStruct;
 import com.bedrockk.molang.runtime.value.DoubleValue;
@@ -12,8 +13,6 @@ import com.cobblemon.mod.common.battles.ActiveBattlePokemon;
 import com.cobblemon.mod.common.battles.interpreter.instructions.MoveInstruction;
 import com.cobblemon.mod.common.battles.pokemon.BattlePokemon;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -51,7 +50,6 @@ public final class WaveEffect {
     }
 
     public static void register() {
-        PayloadTypeRegistry.playS2C().register(WavePayload.ID, WavePayload.CODEC);
         try {
             PokemonEntityFunctions.add(FUNCTION, WaveEffect::run);
         } catch (Throwable t) {
@@ -91,8 +89,8 @@ public final class WaveEffect {
             }
             WavePayload payload = new WavePayload(style, user.getId(), List.copyOf(ids));
             for (ServerPlayer player : world.players()) {
-                if (player.distanceToSqr(user) <= RANGE * RANGE && ServerPlayNetworking.canSend(player, WavePayload.ID)) {
-                    ServerPlayNetworking.send(player, payload);
+                if (player.distanceToSqr(user) <= RANGE * RANGE && Platform.get().canSend(player, WavePayload.ID)) {
+                    Platform.get().send(player, payload);
                 }
             }
             return DoubleValue.ONE;

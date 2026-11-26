@@ -10,7 +10,6 @@ import com.cobblemon.mod.common.battles.interpreter.instructions.MissInstruction
 import com.cobblemon.mod.common.battles.interpreter.instructions.MoveInstruction;
 import com.cobblemon.mod.common.battles.pokemon.BattlePokemon;
 import kotlin.jvm.functions.Function4;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,9 +44,9 @@ public final class CurrentMove {
     private CurrentMove() {
     }
 
-    public static void register() {
-        // Battles only run on a server, and by the time one starts every mod has set itself up
-        ServerLifecycleEvents.SERVER_STARTING.register(server -> wrapParser());
+    /** Run when a server starts: battles only run on a server, and by the time one starts every mod has set itself up. */
+    public static void serverStarting() {
+        wrapParser();
     }
 
     @SuppressWarnings("unchecked")

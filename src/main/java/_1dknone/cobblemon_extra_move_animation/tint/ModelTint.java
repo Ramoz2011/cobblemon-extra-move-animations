@@ -1,11 +1,10 @@
 package _1dknone.cobblemon_extra_move_animation.tint;
 
 import _1dknone.cobblemon_extra_move_animation.molang.PokemonEntityFunctions;
+import _1dknone.cobblemon_extra_move_animation.platform.Platform;
 import com.bedrockk.molang.runtime.MoParams;
 import com.bedrockk.molang.runtime.value.DoubleValue;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -35,7 +34,6 @@ public final class ModelTint {
     }
 
     public static void register() {
-        PayloadTypeRegistry.playS2C().register(ModelTintPayload.ID, ModelTintPayload.CODEC);
         try {
             PokemonEntityFunctions.add(FUNCTION, ModelTint::run);
         } catch (Throwable t) {
@@ -54,8 +52,8 @@ public final class ModelTint {
                     Mth.clamp((float) params.getDouble(4), -1F, 1F), seconds(params, 5),
                     seconds(params, 6), seconds(params, 7), seconds(params, 8));
             for (ServerPlayer player : world.players()) {
-                if (player.distanceToSqr(entity) <= RANGE * RANGE && ServerPlayNetworking.canSend(player, ModelTintPayload.ID)) {
-                    ServerPlayNetworking.send(player, payload);
+                if (player.distanceToSqr(entity) <= RANGE * RANGE && Platform.get().canSend(player, ModelTintPayload.ID)) {
+                    Platform.get().send(player, payload);
                 }
             }
             return DoubleValue.ONE;

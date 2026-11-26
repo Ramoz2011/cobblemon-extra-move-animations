@@ -14,13 +14,13 @@
   "environment": "*",
   "entrypoints": {
     "fabric-datagen": [
-      "_1dknone.cobblemon_extra_move_animation.client.Cobblemon_extra_move_animationDataGenerator"
+      "_1dknone.cobblemon_extra_move_animation.client.fabric.ExtraMoveAnimationsDataGenerator"
     ],
     "client": [
-      "_1dknone.cobblemon_extra_move_animation.client.Cobblemon_extra_move_animationClient"
+      "_1dknone.cobblemon_extra_move_animation.client.fabric.ExtraMoveAnimationsFabricClient"
     ],
     "main": [
-      "_1dknone.cobblemon_extra_move_animation.Cobblemon_extra_move_animation"
+      "_1dknone.cobblemon_extra_move_animation.fabric.ExtraMoveAnimationsFabric"
     ]
   },
   "mixins": [

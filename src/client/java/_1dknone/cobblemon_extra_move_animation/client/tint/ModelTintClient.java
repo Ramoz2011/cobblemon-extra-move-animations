@@ -2,11 +2,7 @@ package _1dknone.cobblemon_extra_move_animation.client.tint;
 
 import _1dknone.cobblemon_extra_move_animation.client.render.ModelOverlay;
 import _1dknone.cobblemon_extra_move_animation.tint.ModelTintPayload;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -41,34 +37,29 @@ public final class ModelTintClient {
     private ModelTintClient() {
     }
 
-    public static void register() {
-        ClientPlayNetworking.registerGlobalReceiver(ModelTintPayload.ID, (payload, context) -> start(context.client(), payload));
-        ClientTickEvents.END_CLIENT_TICK.register(ModelTintClient::tick);
-        WorldRenderEvents.AFTER_ENTITIES.register(ModelTintClient::render);
-        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> TINTS.clear());
+    /** Forgets the tints in progress, e.g. when the player leaves the world. */
+    public static void clear() {
+        TINTS.clear();
     }
 
-    private static void start(Minecraft client, ModelTintPayload payload) {
+    public static void start(Minecraft client, ModelTintPayload payload) {
         if (!disabled && client.level != null) {
             TINTS.add(new Tint(client.level, payload));
         }
     }
 
-    private static void tick(Minecraft client) {
+    public static void tick(Minecraft client) {
         if (TINTS.isEmpty() || client.isPaused()) {
             return;
         }
         TINTS.removeIf(tint -> client.level != tint.world || ++tint.ticks / 20F > tint.payload.end());
     }
 
-    private static void render(WorldRenderContext context) {
-        MultiBufferSource consumers = context.consumers();
+    public static void render(PoseStack poseStack, MultiBufferSource consumers, Vec3 camera, float tickDelta) {
         if (TINTS.isEmpty() || consumers == null) {
             return;
         }
         try {
-            float tickDelta = context.tickCounter().getGameTimeDeltaPartialTick(false);
-            Vec3 camera = context.camera().getPosition();
             for (Tint tint : TINTS) {
                 float strength = tint.strength((tint.ticks + tickDelta) / 20F);
                 Entity entity = tint.world.getEntity(tint.payload.entityId());
@@ -79,7 +70,7 @@ public final class ModelTintClient {
                 float alpha = (color >>> 24) / 255F * strength;
                 float flash = tint.payload.flash();
                 int overlay = flash < 0 ? OverlayTexture.pack(0, RED_ROW) : OverlayTexture.pack(Math.round(flash * 15), WHITE_ROW);
-                OVERLAY.render(context.matrixStack(), consumers, camera, entity, tickDelta,
+                OVERLAY.render(poseStack, consumers, camera, entity, tickDelta,
                         (int) (alpha * 255) << 24 | color & 0xFFFFFF, overlay);
             }
         } catch (Throwable t) {

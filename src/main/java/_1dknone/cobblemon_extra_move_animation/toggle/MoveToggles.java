@@ -1,19 +1,12 @@
 package _1dknone.cobblemon_extra_move_animation.toggle;
 
+import _1dknone.cobblemon_extra_move_animation.platform.Platform;
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.moves.animations.ActionEffectTimeline;
 import com.cobblemon.mod.common.api.moves.animations.ActionEffects;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -61,6 +54,9 @@ public final class MoveToggles {
     /** A two-turn move's charge turn (prepare_solarbeam) goes with the move. */
     private static final String CHARGE_PREFIX = "prepare_";
 
+    /** Hands this class the data each server data reload reads; the mod loader adds it to those reloads. */
+    public static final PreparableReloadListener RESOURCE_CAPTURE = new ResourceCapture();
+
     /** The data the running reload reads; every reload listener gets it before any of them applies. */
     private static volatile ResourceManager resources;
     private static volatile MinecraftServer server;
@@ -72,17 +68,30 @@ public final class MoveToggles {
     private MoveToggles() {
     }
 
+    /**
+     * Hooks into Cobblemon's action effects. The mod loader also adds {@link #RESOURCE_CAPTURE} to the
+     * server's data reloads and passes on {@link #serverStarting}, {@link #serverStopped} and
+     * {@link #playerJoined}.
+     */
     public static void register() {
-        PayloadTypeRegistry.playS2C().register(MoveChoicesPayload.ID, MoveChoicesPayload.CODEC);
-        ServerLifecycleEvents.SERVER_STARTING.register(started -> server = started);
-        ServerLifecycleEvents.SERVER_STOPPED.register(stopped -> server = null);
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, joined) -> send(handler.player));
         try {
-            ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new ResourceCapture());
             ActionEffects.INSTANCE.getObservable().subscribe(Priority.NORMAL, MoveToggles::onReload);
         } catch (Throwable t) {
             LOGGER.warn("Couldn't hook into Cobblemon's action effects; every move plays this mod's animation", t);
         }
+    }
+
+    public static void serverStarting(MinecraftServer started) {
+        server = started;
+    }
+
+    public static void serverStopped() {
+        server = null;
+    }
+
+    /** Tells a player who just joined what the server plays. */
+    public static void playerJoined(ServerPlayer player) {
+        send(player);
     }
 
     /** The moves this mod animates, by Showdown id ("hydropump"). */
@@ -92,9 +101,7 @@ public final class MoveToggles {
 
     /** Whether the installed Cobblemon animates the move itself, rather than with its generic animation. */
     public static boolean cobblemonAnimates(String move) {
-        return FabricLoader.getInstance().getModContainer("cobblemon")
-                .flatMap(container -> container.findPath(DATA + EFFECTS + "/moves/" + move + ".json"))
-                .isPresent();
+        return Platform.get().findInMod("cobblemon", DATA + EFFECTS + "/moves/" + move + ".json").isPresent();
     }
 
     /** Puts the current choices into Cobblemon's map, e.g. after the screen changed them. Run it on the server thread. */
@@ -186,8 +193,8 @@ public final class MoveToggles {
     }
 
     private static void send(ServerPlayer player) {
-        if (ServerPlayNetworking.canSend(player, MoveChoicesPayload.ID)) {
-            ServerPlayNetworking.send(player, new MoveChoicesPayload(cobblemonMoves));
+        if (Platform.get().canSend(player, MoveChoicesPayload.ID)) {
+            Platform.get().send(player, new MoveChoicesPayload(cobblemonMoves));
         }
     }
 
@@ -195,7 +202,7 @@ public final class MoveToggles {
     private static synchronized List<EffectFile> effectFiles() {
         if (effectFiles == null) {
             List<EffectFile> files = new ArrayList<>();
-            Optional<Path> root = FabricLoader.getInstance().getModContainer(MOD_ID).flatMap(container -> container.findPath(DATA + EFFECTS));
+            Optional<Path> root = Platform.get().findInMod(MOD_ID, DATA + EFFECTS);
             if (root.isPresent()) {
                 try (Stream<Path> paths = Files.walk(root.get())) {
                     paths.filter(path -> path.getFileName().toString().endsWith(".json")).forEach(path -> {
@@ -217,7 +224,7 @@ public final class MoveToggles {
     }
 
     private static byte[] read(String modId, EffectFile file) throws IOException {
-        Optional<Path> path = FabricLoader.getInstance().getModContainer(modId).flatMap(container -> container.findPath(DATA + file.path()));
+        Optional<Path> path = Platform.get().findInMod(modId, DATA + file.path());
         return path.isPresent() ? Files.readAllBytes(path.get()) : null;
     }
 
@@ -255,14 +262,7 @@ public final class MoveToggles {
     }
 
     /** Hands this class the data a reload reads, before Cobblemon's action effects are applied from it. */
-    private static final class ResourceCapture implements IdentifiableResourceReloadListener {
-        private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(MOD_ID, "move_toggles");
-
-        @Override
-        public ResourceLocation getFabricId() {
-            return ID;
-        }
-
+    private static final class ResourceCapture implements PreparableReloadListener {
         @Override
         public CompletableFuture<Void> reload(PreparableReloadListener.PreparationBarrier synchronizer, ResourceManager manager, ProfilerFiller prepareProfiler,
                                               ProfilerFiller applyProfiler, Executor prepareExecutor, Executor applyExecutor) {

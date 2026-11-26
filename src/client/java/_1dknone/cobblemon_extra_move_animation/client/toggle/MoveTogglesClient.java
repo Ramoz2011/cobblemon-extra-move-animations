@@ -1,10 +1,6 @@
 package _1dknone.cobblemon_extra_move_animation.client.toggle;
 
 import _1dknone.cobblemon_extra_move_animation.toggle.MoveChoicesPayload;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -35,14 +31,21 @@ public final class MoveTogglesClient {
     private MoveTogglesClient() {
     }
 
-    public static void register() {
-        ClientPlayNetworking.registerGlobalReceiver(MoveChoicesPayload.ID, (payload, context) -> serverCobblemonMoves = List.copyOf(payload.cobblemonMoves()));
-        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> serverCobblemonMoves = List.of());
-        ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
-            if (screen.getClass().getName().equals(COBBLEMON_SETTINGS)) {
-                addButton(client, screen, width);
-            }
-        });
+    /** The server sent its choices. */
+    public static void receive(MoveChoicesPayload payload) {
+        serverCobblemonMoves = List.copyOf(payload.cobblemonMoves());
+    }
+
+    /** Forgets the server's choices when the player leaves it. */
+    public static void clear() {
+        serverCobblemonMoves = List.of();
+    }
+
+    /** Run after any screen sets itself up; adds our button when it is Cobblemon's settings. */
+    public static void screenInitialized(Minecraft client, Screen screen, int width, Buttons buttons) {
+        if (screen.getClass().getName().equals(COBBLEMON_SETTINGS)) {
+            addButton(client, screen, width, buttons);
+        }
     }
 
     /** The moves the server plays Cobblemon's animation for, as it last said. */
@@ -51,10 +54,9 @@ public final class MoveTogglesClient {
     }
 
     /** Puts our button beside Done in the screen's footer, the way vanilla pairs two footer buttons. */
-    private static void addButton(Minecraft client, Screen screen, int width) {
+    private static void addButton(Minecraft client, Screen screen, int width, Buttons buttons) {
         try {
-            List<AbstractWidget> buttons = Screens.getButtons(screen);
-            AbstractWidget done = buttons.stream()
+            AbstractWidget done = buttons.list().stream()
                     .filter(button -> button instanceof Button && CommonComponents.GUI_DONE.equals(button.getMessage()))
                     .findFirst().orElse(null);
             if (done == null) {
@@ -71,5 +73,12 @@ public final class MoveTogglesClient {
                 LOGGER.warn("Couldn't add the move animation button to Cobblemon's settings", t);
             }
         }
+    }
+
+    /** A screen's buttons, as the mod loader hands them out. */
+    public interface Buttons {
+        List<AbstractWidget> list();
+
+        void add(AbstractWidget button);
     }
 }

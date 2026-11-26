@@ -11,7 +11,8 @@ version = project.mod_version
 group = project.maven_group
 
 base {
-    archivesName = project.archives_base_name
+    // "-fabric" next to the NeoForge build's "-neoforge", so players can tell the two jars apart
+    archivesName = "${project.archives_base_name}-fabric"
 }
 
 loom {

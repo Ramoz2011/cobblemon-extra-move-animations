@@ -3,19 +3,13 @@ package _1dknone.cobblemon_extra_move_animation.client.wave;
 import _1dknone.cobblemon_extra_move_animation.wave.WavePayload;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,26 +40,13 @@ public final class WaveClient {
     private WaveClient() {
     }
 
-    public static void register() {
-        ClientPlayNetworking.registerGlobalReceiver(WavePayload.ID, (payload, context) -> start(context.client(), payload));
-        ClientTickEvents.END_CLIENT_TICK.register(WaveClient::tick);
-        WorldRenderEvents.AFTER_ENTITIES.register(WaveClient::render);
-        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> SEQUENCES.clear());
-        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
-            @Override
-            public ResourceLocation getFabricId() {
-                return ResourceLocation.fromNamespaceAndPath("cobblemon_extra_move_animation", FOLDER);
-            }
-
-            @Override
-            public void onResourceManagerReload(ResourceManager manager) {
-                loadStyles(manager);
-            }
-        });
+    /** Forgets the waves in progress, e.g. when the player leaves the world. */
+    public static void clear() {
+        SEQUENCES.clear();
     }
 
     /** Reads every {@code assets/<namespace>/wave_effects/<name>.json} as the style {@code <namespace>:<name>}. */
-    private static void loadStyles(ResourceManager manager) {
+    public static void loadStyles(ResourceManager manager) {
         STYLES.clear();
         MISSING.clear();
         for (Map.Entry<ResourceLocation, Resource> entry : manager.listResources(FOLDER, id -> id.getPath().endsWith(".json")).entrySet()) {
@@ -81,7 +62,7 @@ public final class WaveClient {
         }
     }
 
-    private static void start(Minecraft client, WavePayload payload) {
+    public static void start(Minecraft client, WavePayload payload) {
         if (disabled || client.level == null) {
             return;
         }
@@ -99,7 +80,7 @@ public final class WaveClient {
         }
     }
 
-    private static void tick(Minecraft client) {
+    public static void tick(Minecraft client) {
         if (SEQUENCES.isEmpty() || client.isPaused()) {
             return;
         }
@@ -110,15 +91,13 @@ public final class WaveClient {
         }
     }
 
-    private static void render(WorldRenderContext context) {
-        MultiBufferSource consumers = context.consumers();
+    public static void render(PoseStack poseStack, MultiBufferSource consumers, Vec3 camera, float tickDelta) {
         if (SEQUENCES.isEmpty() || consumers == null) {
             return;
         }
         try {
-            float tickDelta = context.tickCounter().getGameTimeDeltaPartialTick(false);
             for (WaveSequence sequence : SEQUENCES) {
-                sequence.render(context.matrixStack(), consumers, context.camera().getPosition(), tickDelta);
+                sequence.render(poseStack, consumers, camera, tickDelta);
             }
         } catch (Throwable t) {
             fail(t);

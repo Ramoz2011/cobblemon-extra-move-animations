@@ -1,5 +1,6 @@
 package _1dknone.cobblemon_extra_move_animation.toggle;
 
+import _1dknone.cobblemon_extra_move_animation.platform.Platform;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -7,7 +8,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
-import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,7 +98,7 @@ public final class MoveConfig {
     }
 
     private static Path path() {
-        return FabricLoader.getInstance().getConfigDir().resolve(FILE_NAME);
+        return Platform.get().configDir().resolve(FILE_NAME);
     }
 
     /** The file's contents: empty when there's no file yet, null when it can't be read. */

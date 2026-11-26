@@ -1,6 +1,7 @@
 package _1dknone.cobblemon_extra_move_animation.beatup;
 
 import _1dknone.cobblemon_extra_move_animation.molang.PokemonEntityFunctions;
+import _1dknone.cobblemon_extra_move_animation.platform.Platform;
 import com.bedrockk.molang.runtime.MoParams;
 import com.bedrockk.molang.runtime.value.DoubleValue;
 import com.bedrockk.molang.runtime.value.MoValue;
@@ -12,8 +13,6 @@ import com.cobblemon.mod.common.battles.ShowdownPokemon;
 import com.cobblemon.mod.common.battles.ShowdownSide;
 import com.cobblemon.mod.common.battles.pokemon.BattlePokemon;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -46,7 +45,6 @@ public final class BeatUpAfterimages {
     }
 
     public static void register() {
-        PayloadTypeRegistry.playS2C().register(BeatUpPayload.ID, BeatUpPayload.CODEC);
         try {
             PokemonEntityFunctions.add(FUNCTION, BeatUpAfterimages::run);
         } catch (Throwable t) {
@@ -69,8 +67,8 @@ public final class BeatUpAfterimages {
             BeatUpPayload payload = new BeatUpPayload(user.getId(), target == null ? -1 : target.getId(), Math.max(hits, 0),
                     firstStrike, interval, strikers(user, hits));
             for (ServerPlayer player : world.players()) {
-                if (player.distanceToSqr(user) <= RANGE * RANGE && ServerPlayNetworking.canSend(player, BeatUpPayload.ID)) {
-                    ServerPlayNetworking.send(player, payload);
+                if (player.distanceToSqr(user) <= RANGE * RANGE && Platform.get().canSend(player, BeatUpPayload.ID)) {
+                    Platform.get().send(player, payload);
                 }
             }
             return DoubleValue.ONE;

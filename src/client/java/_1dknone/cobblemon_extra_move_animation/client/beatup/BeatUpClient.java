@@ -1,13 +1,10 @@
 package _1dknone.cobblemon_extra_move_animation.client.beatup;
 
 import _1dknone.cobblemon_extra_move_animation.beatup.BeatUpPayload;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,14 +27,12 @@ public final class BeatUpClient {
     private BeatUpClient() {
     }
 
-    public static void register() {
-        ClientPlayNetworking.registerGlobalReceiver(BeatUpPayload.ID, (payload, context) -> start(context.client(), payload));
-        ClientTickEvents.END_CLIENT_TICK.register(BeatUpClient::tick);
-        WorldRenderEvents.AFTER_ENTITIES.register(BeatUpClient::render);
-        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> SEQUENCES.clear());
+    /** Forgets the moves in progress, e.g. when the player leaves the world. */
+    public static void clear() {
+        SEQUENCES.clear();
     }
 
-    private static void start(Minecraft client, BeatUpPayload payload) {
+    public static void start(Minecraft client, BeatUpPayload payload) {
         if (disabled || client.level == null || payload.teammates().isEmpty()) {
             return;
         }
@@ -48,7 +43,7 @@ public final class BeatUpClient {
         }
     }
 
-    private static void tick(Minecraft client) {
+    public static void tick(Minecraft client) {
         if (SEQUENCES.isEmpty() || client.isPaused()) {
             return;
         }
@@ -60,15 +55,13 @@ public final class BeatUpClient {
         }
     }
 
-    private static void render(WorldRenderContext context) {
-        MultiBufferSource consumers = context.consumers();
+    public static void render(PoseStack poseStack, MultiBufferSource consumers, Vec3 camera, float tickDelta) {
         if (SEQUENCES.isEmpty() || consumers == null) {
             return;
         }
         try {
-            float tickDelta = context.tickCounter().getGameTimeDeltaPartialTick(false);
             for (BeatUpSequence sequence : SEQUENCES) {
-                sequence.render(context.matrixStack(), consumers, context.camera().getPosition(), tickDelta);
+                sequence.render(poseStack, consumers, camera, tickDelta);
             }
         } catch (Throwable t) {
             fail(t);

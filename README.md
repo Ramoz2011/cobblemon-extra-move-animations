@@ -1,12 +1,14 @@
 # Cobblemon: Extra Move Animations
 
-A [Fabric](https://fabricmc.net/) mod that adds custom battle animations, particle
-effects, and sound design to [Cobblemon](https://cobblemon.com/) for twenty moves
-the base mod doesn't animate yet.
+A mod for [Fabric](https://fabricmc.net/) and [NeoForge](https://neoforged.net/)
+that adds custom battle animations, particle effects, and sound design to
+[Cobblemon](https://cobblemon.com/) for twenty moves the base mod doesn't
+animate yet.
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Minecraft 1.21.1](https://img.shields.io/badge/minecraft-1.21.1-brightgreen.svg)
 ![Fabric](https://img.shields.io/badge/modloader-Fabric-dbb69d.svg)
+![NeoForge](https://img.shields.io/badge/modloader-NeoForge-e68c37.svg)
 
 ## This mod's animation or Cobblemon's
 
@@ -15,9 +17,9 @@ and later animate Hydro Pump and Draco Meteor themselves; for the other moves,
 "Cobblemon" means its generic move animation. Every move starts on this mod's
 animation.
 
-To switch, open Cobblemon's settings (**Mods → Cobblemon → Configure** with
-[Mod Menu](https://modrinth.com/mod/modmenu), or type `/cobblemonconfig`) and
-click **Extra Move Animations...** next to Done. Click a move to flip it
+To switch, open Cobblemon's settings (type `/cobblemonconfig`, or on Fabric
+use **Mods → Cobblemon → Configure** with [Mod Menu](https://modrinth.com/mod/modmenu))
+and click **Extra Move Animations...** next to Done. Click a move to flip it
 between **This mod** and **Cobblemon**; the change applies when you close the
 screen.
 
@@ -108,19 +110,28 @@ and hit counts all stay Cobblemon's. If a future Cobblemon update breaks the
 Java side, only those extras and the choice switch off, and every move keeps
 this mod's particle animation.
 
+The Fabric and NeoForge versions are built from the same code and the same
+animation files. Only a thin layer that hooks into each loader's events
+differs: the `fabric` packages in `src/`, and the `neoforge/` folder.
+
 ## Requirements
 
 - Minecraft 1.21.1
-- [Fabric Loader](https://fabricmc.net/) ≥ 0.19.3
-- [Fabric API](https://modrinth.com/mod/fabric-api)
-- [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin)
 - [Cobblemon](https://modrinth.com/mod/cobblemon) 1.7.3 or newer (tested up to 1.8.4)
+- On Fabric: [Fabric Loader](https://fabricmc.net/) ≥ 0.19.3,
+  [Fabric API](https://modrinth.com/mod/fabric-api) and
+  [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin)
+- On NeoForge: [NeoForge](https://neoforged.net/) 21.1 and
+  [Kotlin for Forge](https://modrinth.com/mod/kotlin-for-forge), which
+  Cobblemon needs anyway
 
 ## Installation
 
-1. Install [Fabric Loader](https://fabricmc.net/use/) for Minecraft 1.21.1.
-2. Download and place in your `mods` folder: Fabric API, Fabric Language
-   Kotlin, Cobblemon, and this mod's jar.
+1. Install [Fabric Loader](https://fabricmc.net/use/) or
+   [NeoForge](https://neoforged.net/) for Minecraft 1.21.1.
+2. Download and place in your `mods` folder: Cobblemon and what it needs on
+   your loader, and this mod's jar for your loader (the `fabric` or the
+   `neoforge` one).
 3. Launch the game.
 
 **Playing on a server?** Install the mod on the server as well as on every
@@ -130,10 +141,9 @@ is only on your client, nothing will show up.
 ## Building from source
 
 ```sh
-./gradlew build
+./gradlew build                  # Fabric jar, in build/libs/
+cd neoforge && ./gradlew build   # NeoForge jar, in neoforge/build/libs/
 ```
-
-The built jar is output to `build/libs/`.
 
 ## License
 

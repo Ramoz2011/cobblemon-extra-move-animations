@@ -1,0 +1,93 @@
+// The NeoForge build of the mod. It compiles the same code and resources as the Fabric build in the
+// folder above, minus the Fabric-only parts (packages named "fabric"), plus the NeoForge entrypoint here.
+import groovy.json.JsonSlurper
+
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.144'
+}
+
+// One place for the mod's version and the Minecraft and Cobblemon versions: the Fabric build's properties
+def shared = new Properties()
+file('../gradle.properties').withInputStream { shared.load(it) }
+// The mod's name, description and links come from fabric.mod.json too, so they can't drift apart
+def fabricMod = new JsonSlurper().parse(file('../src/main/resources/fabric.mod.json'))
+
+version = shared.mod_version
+group = shared.maven_group
+
+base {
+    archivesName = "${shared.archives_base_name}-neoforge"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+repositories {
+    // Cobblemon
+    maven { url 'https://maven.impactdev.net/repository/development/' }
+    // Kotlin for Forge, which Cobblemon runs on
+    maven { url 'https://thedarkcolour.github.io/KotlinForForge/' }
+}
+
+sourceSets.main {
+    java {
+        srcDir '../src/main/java'
+        srcDir '../src/client/java'
+        exclude '**/fabric/**'
+    }
+    resources {
+        srcDir '../src/main/resources'
+        exclude 'fabric.mod.json', '*.mixins.json'
+    }
+}
+
+neoForge {
+    version = project.neoforge_version
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+    }
+
+    mods {
+        "${fabricMod.id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+dependencies {
+    implementation "com.cobblemon:neoforge:${shared.cobblemon_version}"
+    implementation "thedarkcolour:kotlinforforge-neoforge:${project.kotlinforforge_version}"
+}
+
+def modProperties = [
+        mod_id                : fabricMod.id,
+        mod_name              : fabricMod.name,
+        mod_version           : project.version,
+        mod_description       : fabricMod.description,
+        mod_authors           : fabricMod.authors.join(', '),
+        mod_license           : fabricMod.license,
+        mod_url               : fabricMod.contact.homepage,
+        mod_issues            : fabricMod.contact.issues,
+        minecraft_version     : shared.minecraft_version,
+        neoforge_version_range: project.neoforge_version_range,
+        cobblemon_min_version : fabricMod.depends.cobblemon.replace('>=', ''),
+]
+
+processResources {
+    inputs.properties modProperties
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand modProperties
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release.set(21)
+}
